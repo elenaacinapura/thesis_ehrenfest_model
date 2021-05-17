@@ -1,0 +1,116 @@
+\documentclass[a4paper,11pt,titlepage,twoside,openany,hidelinks,pdfa]{book}
+\usepackage{packages}
+
+\definecolor{lightgray}{RGB}{200, 200, 200}
+
+\singlespacing
+
+%%%%%%%%%%%%%%%%%%%% Commands %%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\prob}[1]{\mathbb{P}\{#1\}}
+\newcommand{\Space}[0]{\mathcal{S}}
+\newcommand{\f}[0]{\vec{f}}
+\renewcommand\vec{\mathbf}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%% Theorem styles %%%%%%%%%%%%%%%%%%%%%%
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}[lemma]{Corollary}
+\newtheorem*{remark}{Remark}
+
+\newtheoremstyle{ndefinition}{}{}{}{}{\bfseries}{}{.5em}{\thmnote{#3: }}
+\theoremstyle{ndefinition}
+\newtheorem*{ndef}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{observation}[definition]{Observation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%% Bibliography %%%%%%%%%%%%%%%%%%%%%%%
+\addbibresource{./biblio.bib}
+% split bibliography between cited and not cited
+\DeclareBibliographyCategory{cited}
+\AtEveryCitekey{\addtocategory{cited}{\thefield{entrykey}}}
+\nocite{*}
+
+
+\errorcontextlines\maxdimen
+
+
+\newcommand*\ruleline[1]{\par\noindent\raisebox{.8ex}{\makebox[\linewidth]{\hspace{.2\linewidth}\hrulefill\hspace{2ex}\raisebox{-.8ex}{#1}\hspace{2ex}\hrulefill\hspace{.2\linewidth}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% BEGIN DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\pagenumbering{gobble}
+
+\include{sections/frontpage}
+
+\cleardoublepage
+
+% Start page counting in roman numerals
+%\frontmatter
+
+\tableofcontents
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% gruppo per definizione di successione capitoli senza interruzione di pagina
+\begingroup
+\mainmatter
+% nessuna interruzione di pagina tra capitoli
+% ridefinizione dei comandi di clear page
+%\renewcommand{\cleardoublepage}{} 
+%\renewcommand{\clearpage}{} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% redefinizione del formato del titolo del capitolo
+% da formato
+%   Capitolo X
+%   Titolo capitolo
+% a formato
+%   X   Titolo capitolo
+\titleformat{\chapter}
+{\normalfont\huge\bfseries}{\thechapter}{1em}{}
+%\titlespacing*{\chapter}{0pt}{0.59in}{0.02in}
+%\titlespacing*{\section}{0pt}{0.20in}{0.02in}
+%\titlespacing*{\subsection}{0pt}{0.10in}{0.02in}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%% Abstract %%%%%%%%%%%%%%%%%%%%%%
+\include{sections/abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%% Sections input %%%%%%%%%%%%%%%%%%%%%%
+\include{sections/ch1_intro}
+\include{sections/ch2_markov_chains}
+\endgroup
+
+
+% bibliografia in formato bibtex
+%
+% aggiunta del capitolo nell'indice
+%\addcontentsline{toc}{chapter}{Bibliografia}
+% stile con ordinamento alfabetico in funzione degli autori
+%\bibliographystyle{plain}
+%\bibliography{biblio}
+\nocite{*}
+% \printbibheading[heading=bibintoc]
+% \printbibliography[category=cited,heading=subbibliography,title={References}]
+% \printbibliography[notcategory=cited,heading=subbibliography,title={Further reading}]
+%\printbibliography[heading=bibintoc,title={References}]
+
+
+%\titleformat{\chapter}
+%    {\normalfont\Huge\bfseries}{Attachment \thechapter}{1em}{}
+% sezione Allegati - opzionale
+%\appendix
+%\input{attachments}
+
+\end{document}
