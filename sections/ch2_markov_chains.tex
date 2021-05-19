@@ -47,7 +47,7 @@ Furthermore, since we will be dealing with the time evolution of the system, we 
 \smallskip
 Having seen how to represent the probability distribution of a state, let us now concentrate on how to represent transition probabilities.
 
-\begin{ndef} [Stochastic matrix]
+\begin{ndef} [Stochastic matrix] \label{def:stoc_matrix}
     A stochastic (or transition) matrix is a matrix $P \in \mathbb{R}^{M\times M}$ with the following properties:
     \begin{center}
         \begin{enumerate}
@@ -92,7 +92,7 @@ Suppose now that a system is described at a certain time by a distribution $\vec
     It is clear from the proof of theorem \ref{th:evolution_simple}, in particular from eq. \ref{eq:matmul1}, that it is useful to interpret distributions as \emph{column vectors}. This, indeed, follows from the fact that we have defined $P$ such that the sum on its \emph{columns} must always equal 1. However, it is also a common practice to define $P$ such that the sum on it \emph{rows} must equal 1; after this latter convention, then, distributions are interpreted as row vectors and one obtains that the law fot the evolution is $\f_{t+1} = \f_t P$. We decided to adhere to the "column-based" convention because it resembles the formalism of quantum mechanics, where operators are multiplied by the state vectors, and not the other way around; this convention results therefore more natural from a physicist's point of view.
 \end{remark}
 
-\section{Limiting behaviour and stationary distribution}
+\section{Limiting behaviour}
 We now draw our attention to a fundamental aspect of Markov chains. Suppose that the initial distribution of a system, $\f_0$, is completely known, i.e. that we know the probabilities for the system to be in each of the possible states $x_1, x_2, \dots, x_M$. We know how to compute che evolution of these probabilities time step after time step using the stochastic matrix, but we might want to ask ourself the following question: 
 \begin{quote}
     \emph{Is there a distribution that the system will eventually reach, asymptotically? If it does, which distribution is this?}
@@ -104,10 +104,75 @@ It is clear why one should be interested in this question: in most real-life app
 In order to answer this question, we will introduce some concepts known as \emph{limiting distribution} and \emph{stationary distribution}.
 
 \begin{ndef}[Limiting distribution]
-The limiting distribution $\p$ for a certain Markov chain, if it exists, is defined as follows:
+Given a Markov chain with stochastic matrix $P$, its limiting distribution $\p$, if it does exist, is defined as the distribution whose components are
 \begin{equation}
     \pi_i \equiv \lim_{t \rightarrow \infty} \prob{X_t = x_i} \quad \forall i=1,\dots,M
 \end{equation}
-and each $\pi_i$ is independent of the initial distribution of the chain.
-Aggiungi dim che la matrice stocastica ha sto vettore sulle colonne
+independently of the initial distribution of the chain.
 \end{ndef}
+
+A nice feature of the limiting distribution is that, if it exists, then the matrix obtained by $\lim_{t \rightarrow \infty} P^t$ has each column equal to the limiting distribution:
+\begin{equation}
+    \lim_{t \rightarrow \infty} P^t = 
+    \begin{pmatrix}
+        \pi_1 & \pi_1 & \dots & \pi_1 \\
+        \pi_2 & \pi_2 & \dots & \pi_2 \\
+        \vdots & \vdots & \vdots & \vdots \\
+        \pi_M & \pi_M & \dots & \pi_M
+    \end{pmatrix}
+\end{equation}
+This is quite straightforward indeed, thanks to corollary \ref{th:evolution_complete}:
+\begin{align}
+    \pi_i
+        & = \lim_{t \rightarrow \infty} \prob{X_t = x_i} \\
+        & = \lim_{t \rightarrow \infty} (\f_t)_i \\
+        & = \lim_{t \rightarrow \infty} P^t \f_0 && \text{for corollary \ref{th:evolution_complete}}
+\end{align}
+Since, by definition, the $\pi_i$ must not depend on $\f_0$, then we can choose as $\f_0$ the vectors of the canonical basis of $\mathbb{R}^M$; each $i$-th element of the canonical basis is then transformed in the $i$-th column of $P^t$, and thus we obtain the above equality. 
+
+\medskip
+As mentioned before, another important concept that we have to introduce in the context of limiting behaviour is the \emph{stationary distribution}.
+
+\begin{ndef} [Stationary distribution]
+    Given a Markov chain with stochastic matrix $P$, its stationary distribution $\staz$, if it does exist, is defined as the distribution such that 
+    \begin{equation}
+        P \staz = \staz
+    \end{equation}
+    Hence, the stationary distribution is the \text{eigenvalue} of the stochastic matrix with eigenvalue equal 1. If the system happens to be found in the stationary distribution, it will remain in that same state forever.
+\end{ndef}
+As one might guess, there is a strong relationship between the limiting distribution and the stationary distribution, and that is expressed by the following theorem:
+
+\begin{theorem}
+    Suppose that a Markov chain with stochastic matrix $P$ has a limiting distribution $\p$. Then $\p$ is also a stationary distribution for the chain.
+\end{theorem}
+\begin{proof}
+    We have that, independently of the initial distribution $\f_0$
+    \begin{align}
+        P \p
+            & = P \lim_{t \rightarrow \infty} P^t \f_0 \\
+            & = lim_{t \rightarrow \infty} P^{t+1} \f_0 \\
+            & = \p
+    \end{align}
+\end{proof}
+Unfortunately, the other implication does not always hold. That is, a Markov chain might well have a stationary distribution, but $\lim_{t \rightarrow \infty} P^t$ may not exist anyway. First of all, one must assure that such stationary distribution is unique, otherwise the limit would not be unique; even then, however, other assumptions are needed in order to guarantee convergence. Fortunately, the theorem named after Perron and Frobenius states when the stationary distribution of a chain is also its limiting distribution, but before we proceed with its statement we must give just some more definitions. We will not prove the theorem, since that would be a lengthy task that would draw our attention away from the physical applications of the Markov chains, so we will also try to give an intuitive and practical definition of the following properties, rather than a strictly formal one. 
+% Agggiungere reference a dove trovare i dettagli dei calcoli
+
+\begin{ndef} [Irreducible Markov chain]
+    A Markov chain is said to be irreducible if every state can lead, sooner or later, to every other state. That is, no matter what the initial state for the system is at $t=0$, every other state has a nonzero probability to be reach at some time $t>0$.
+\end{ndef}
+\begin{ndef} [Period of a state and aperiodicity]
+    Given a state $x_i \in \Space$, its \emph{period} $k_i$ is defined as the greatest common divisor (gcd) of the times at which $x_i$ can be reached, given that the system started in $x_i$ at $t=0$. That is,
+    \begin{equation}
+        k_i \equiv \text{gcd} \left\{ t>0 : \prob{X_t = x_i | X_0 = x_i} > 0 \right\}
+    \end{equation} 
+    A \emph{state} is said to be \emph{aperiodic} if its period equals 1. A Markov chain on space state $\Space$ is said to be aperiodic if all $x_i \in \Space$ are aperiodic.
+\end{ndef}
+Now we are finally equipped to state the Perron-Frobenius theorem.
+
+\begin{theorem}[Perron-Frobenius]
+    Suppose that a Markov chain is irreducible and aperiodic. Then it has a unique stationary distribution and a limiting distribution, and the two coincide.
+\end{theorem}
+As a side note, a Markov chain which is irreducible and aperiodic is usually called \emph{ergodic}.
+So we have finally found an answer to our original question: if we can verify that a Markov chain is ergodic, then all we have to do is to find its stationary distribution (i.e., the eigenvector with unitary eigenvalue, and we are usually good at finding eigenvalues), and then we have automatically found the asymptotic distribution of the system! In the following paragraph, then, we will show which interesting information about the Markov chain we can find, thanks to the knowledge of the limiting distribution.
+
+\section{Mean recurrence time and the stationary distribution}
