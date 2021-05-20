@@ -98,7 +98,7 @@ We now draw our attention to a fundamental aspect of Markov chains. Suppose that
     \emph{Is there a distribution that the system will eventually reach, asymptotically? If it does, which distribution is this?}
 \end{quote}
 
-It is clear why one should be interested in this question: in most real-life applications, one usually starts with a system in a specific known state and lets it evolve for some amount of time, which is usually many orders of magnitude greater than the "typical" time scale of the system. It is therefore useful to understand if the system has an asymptotic behavior.
+It is clear why one should be interested in this question: in most real-life applications, one often starts with a system in a specific known state and lets it evolve for some amount of time, which is usually many orders of magnitude greater than the typical time scale of the system. It is therefore useful to understand the asymptotic (or\emph{limiting}) behaviour of the system.
 
 \smallskip
 In order to answer this question, we will introduce some concepts known as \emph{limiting distribution} and \emph{stationary distribution}.
@@ -113,7 +113,7 @@ independently of the initial distribution of the chain.
 
 A nice feature of the limiting distribution is that, if it exists, then the matrix obtained by $\lim_{t \rightarrow \infty} P^t$ has each column equal to the limiting distribution:
 \begin{equation}
-    \lim_{t \rightarrow \infty} P^t = 
+    \text{if $\p$ exists, then } \quad \quad \lim_{t \rightarrow \infty} P^t = 
     \begin{pmatrix}
         \pi_1 & \pi_1 & \dots & \pi_1 \\
         \pi_2 & \pi_2 & \dots & \pi_2 \\
@@ -138,15 +138,15 @@ As mentioned before, another important concept that we have to introduce in the 
     \begin{equation}
         P \staz = \staz
     \end{equation}
-    Hence, the stationary distribution is the \text{eigenvalue} of the stochastic matrix with eigenvalue equal 1. If the system happens to be found in the stationary distribution, it will remain in that same state forever.
+    Hence, the stationary distribution is the \text{eigenvalue} of the stochastic matrix with unitary eigenvalue. If the system happens to be found in the stationary distribution, it will remain in that same state forever.
 \end{ndef}
-As one might guess, there is a strong relationship between the limiting distribution and the stationary distribution, and that is expressed by the following theorem:
+As one might guess the limiting distribution and the stationary distribution are closely related. A first relationship between them is expressed by the following theorem.
 
 \begin{theorem}
     Suppose that a Markov chain with stochastic matrix $P$ has a limiting distribution $\p$. Then $\p$ is also a stationary distribution for the chain.
 \end{theorem}
 \begin{proof}
-    We have that, independently of the initial distribution $\f_0$
+    We have that, independently of the initial distribution $\f_0$:
     \begin{align}
         P \p
             & = P \lim_{t \rightarrow \infty} P^t \f_0 \\
@@ -158,21 +158,72 @@ Unfortunately, the other implication does not always hold. That is, a Markov cha
 % Agggiungere reference a dove trovare i dettagli dei calcoli
 
 \begin{ndef} [Irreducible Markov chain]
-    A Markov chain is said to be irreducible if every state can lead, sooner or later, to every other state. That is, no matter what the initial state for the system is at $t=0$, every other state has a nonzero probability to be reach at some time $t>0$.
+    A Markov chain is said to be irreducible if every state can lead, sooner or later, to every other state. That is, no matter what the initial state for the system is at $t=0$, every other state has a nonzero probability to be reached at some time $t>0$.
 \end{ndef}
 \begin{ndef} [Period of a state and aperiodicity]
     Given a state $x_i \in \Space$, its \emph{period} $k_i$ is defined as the greatest common divisor (gcd) of the times at which $x_i$ can be reached, given that the system started in $x_i$ at $t=0$. That is,
     \begin{equation}
         k_i \equiv \text{gcd} \left\{ t>0 : \prob{X_t = x_i | X_0 = x_i} > 0 \right\}
     \end{equation} 
-    A \emph{state} is said to be \emph{aperiodic} if its period equals 1. A Markov chain on space state $\Space$ is said to be aperiodic if all $x_i \in \Space$ are aperiodic.
+    A \emph{state} is said to be \emph{aperiodic} if its period equals 1. A Markov chain on space state $\Space$ is said to be aperiodic if all $x_i \in \Space$ are aperiodic. A Markov chain that is both irreducible and aperiodic is said \emph{ergodic}.
 \end{ndef}
 Now we are finally equipped to state the Perron-Frobenius theorem.
 
 \begin{theorem}[Perron-Frobenius]
-    Suppose that a Markov chain is irreducible and aperiodic. Then it has a unique stationary distribution and a limiting distribution, and the two coincide.
+    Suppose that a Markov chain is ergodic. Then it has a unique stationary distribution and a limiting distribution, and the two coincide.
 \end{theorem}
-As a side note, a Markov chain which is irreducible and aperiodic is usually called \emph{ergodic}.
-So we have finally found an answer to our original question: if we can verify that a Markov chain is ergodic, then all we have to do is to find its stationary distribution (i.e., the eigenvector with unitary eigenvalue, and we are usually good at finding eigenvalues), and then we have automatically found the asymptotic distribution of the system! In the following paragraph, then, we will show which interesting information about the Markov chain we can find, thanks to the knowledge of the limiting distribution.
 
-\section{Mean recurrence time and the stationary distribution}
+\medskip
+So we have finally found an answer to our original question: if we can verify that a Markov chain is ergodic, then all we have to do is to find its stationary distribution (i.e., the eigenvector with unitary eigenvalue), and then we have automatically found the asymptotic distribution of the system. Finding eigenvectors and eigenvalues is usually a very feasible task and there are plenty of libraries that offer optimized routines to perform that. 
+
+In the last section of this chapter, then, we will show some interesting information that one can obtain about a Markov chain, thanks to the knowledge of the limiting distribution.
+
+\section{Mean recurrence time}
+Suppose that a system described by a Markov process is found at $t = 0$ in some state $x_i$. An interesting question at this point could be: what is the average time that one would have to wait, before the system will come back to that same state? Alternatively, another closely related question might be: what is the proportion of time that the system is expected to spend in state $x_i$?
+
+As one might expect, the knowledge of the limiting behaviour of the Markov chain can help answer these question, and this section is devoted to that. As before, we will start with some simple definition, and then give the relevant theorems.
+
+\medskip
+Consider a system involved in a Markov process on state space $\Space$ sand suppose that the system evolves for $T$ time steps; let the sequence $\{X_0, X_1, \dots, X_T\}$ describe the state of the system at the various time instants.
+\begin{ndef} [Number of visits]
+    Given a state $x_i \in \Space$, we define $n_i (x_j, T)$ as the number of times that system happens to be in state $x_i$, given that the initial state was $x_j$ and that the system evolved for $T$ time steps. This means:
+    \begin{equation}
+        n_i (x_j, T) \equiv \sum_{t = 0}^T \mathbb{1}_i(X_t) \quad , \quad \text{given }X_0 = x_j
+    \end{equation} 
+    where 
+    \begin{equation}
+        \mathbb{1}_i(X_t) = 
+        \begin{cases}
+            1 & \text{if $X_t = x_i$} \\
+            0 & \text{otherwise}
+        \end{cases}
+    \end{equation}
+\end{ndef}
+\begin{ndef} [Mean visit frequency and mean recurrence time]
+    Given a state $x_i \in \Space$, we define its \emph{mean visit frequency}, $\nu_i$, as 
+    \begin{equation}
+        \nu_i \equiv \lim_{T\rightarrow \infty} \frac{1}{T} \mathbbm{E} \left[ n_i (T) \right]
+    \end{equation}
+    independently on the initial state; this is the reason why we have dropped the indication of the the initial state.
+    We furthermore define the \emph{mean recurrence time} to state $x_i$, $\tau_i$, as 
+    \begin{equation}
+        \tau_i \equiv \frac{1}{v_i}
+    \end{equation}
+\end{ndef}
+Notice that, in fact, the definition of the mean recurrence time has the meaning of the \emph{average} time one has to wait before the state can return to a given.
+
+\medskip
+There is a a fundamental relationship connecting the mean visit frequency and the mean recurrence time to the limiting distribution of the chain.
+
+\begin{theorem}
+    Suppose that a Markov chain has a limiting distribution $\p$. Then the mean recurrence time of each state given by the corresponding component of the limiting distribution:
+    \begin{equation}
+        \nu_i = \pi_i
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Let us begin by calculating the expected value of $n_i (x_j, T)$, for some given initial state $x_j$.
+    \begin{align}
+        n_i = 
+    \end{align}
+\end{proof}
