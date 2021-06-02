@@ -8,7 +8,7 @@ Consider a finite set $\Space$ with dimension $M$ and consider a system whose st
 be the probability that the system is found the state labeled by $x$ at time $t$.
 
 \begin{ndef} [Discrete Markov chain] \label{def:markov-chain}
-    A sequence of states $\{X_0, X_1, X_2, \dots, X_t\}$ on a discrete state space $\Space$ is said a \emph{discrete Markov chain} if the following property holds $\forall t \in \mathbb N$ and $\forall x_0, \dots, x_t \in \Space$:
+    A sequence of states $\{X_t\}_{t\in \mathbb{N}}$ on a discrete state space $\Space$ is said a \emph{discrete Markov chain} if the following property holds $\forall t \in \mathbb N$ and $\forall x_0, \dots, x_t \in \Space$:
     \begin{equation}
         \prob{ X_t = x_t | X_{t-1} = x_{t-1}, X_{t-2} = x_{t-2}, \dots, X_0 = x_0 } = \prob { X_t = x_t | X_{t-1} = x_{t-1} } \quad
     \end{equation}
