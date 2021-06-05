@@ -14,8 +14,32 @@ First of all, notice that the state of the system can be completely described by
 \begin{equation}
     X_t \in \Space = \{ 0, 1, 2, \dots, N \}
 \end{equation}
-In the previous chapter the possible states of the system were labeled by $x_1, x_2, \dots, x_M$; in this section will will turn to a more compact and easy-to-read notation: if there are $i$ particles in box A, we will just label that state with the letter $i$:
+where
 \begin{equation}
-    \forall i = \{0, 1, \dots, N \} \quad X_t = i \quad \Leftrightarrow \quad \text{there are $i$ particles in box A at time $t$}
+    X_t = j \quad \Leftrightarrow \quad \text{there are $j$ particles in box A at time $t$}
 \end{equation}
-We can now see that a sequence $\{X_t\}_{t\in \mathbb{N}}$ does in fact satisfy the Markov property, thus representing a Markov chain.
+We can now see that a sequence $\{X_t\}_{t\in \mathbb{N}}$ satisfies the Markov property, thus representing a Markov chain: this is true because the outcome of drawing one particle and a box at random does not depend on the previous drawings but only on the current distribution of particles between the boxes. If, for instance, there are $j$ particles in box A, the probability of drawing a particle that is box A does not depend on the sequence that led to state $j$, but only on the state itself. Hence, the number of particles in box A at a given time only depends on the state of the time before, which is exactly the definition of the Markov property.
+
+Let us calculate the transition probabilities explicitly. Suppose that there are $j$ particles in box A at time $t$, i.e. $X_t = j$. Then only three events can happen at time $t+1$: either the box has lost one particle, or it has acquired one, or it has the same number of particles as before. So, given $X_t = j$, $X_{t+1}$ can only equal $j$, $j+1$ or $j-1$. The probability that $X_{t+1} = j+1$ is given by the probability of drawing a particle from box B, which is $(N-j)/N$, times the probability of drawing box A, which is $1/2$. Similarly, the probability that $X_{t-1}$ is given by the probability of drawing a particle from box A, which is $j/N$, time the probability of drawing box B, which is $1/2$. Lastly, the event that $X_t = j$ can happen either if one draws a particle from box A and box A, or if one draws a particle from box B and box B, for a total of $\frac{j}{2N} + \frac{N-j}{2N} = 1/2$. So, in summary
+\begin{equation}
+    P_{ij} = \prob{X_{t+1} = i | X_t = j} =
+    \begin{cases}
+        \frac{j}{2N} & \text{if $i = j - 1$} \\
+        \frac{1}{2} & \text{if $i = j$}\\
+        \frac{N - j}{2N} & \text{if $i = j + 1$} \\
+    \end{cases}
+\end{equation}
+Notice that, having calculated the transition probabilities, we can directly write the transition matrix, and it will be a tridiagonal matrix, since a state $j$ only connects the states $j$, $j+1$ and $j-1$, and will have $1/2$ on the diagonal. The transition matrix will look like this:
+\begin{equation}
+    P = 
+    \begin{pmatrix}
+        \half & \frac{1}{2N} & 0 & 0 & 0 & \dots & 0 & 0 \\
+        \half & \half & \frac{2}{2N} & 0 & 0 & \dots & 0 & 0 \\
+        0     & \frac{N-1}{2N} & \half & \frac{3}{2N} & 0 & \dots & 0 & 0 \\
+        0 & 0 & \frac{N-2}{2N} & \half & \frac{4}{2N} & \dots & 0 & 0 \\
+        \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+        0 & 0 & \dots & 0 & 0 & \frac{2}{2N} & \half & \half \\
+        0 & 0 & \dots & 0 & 0 & 0 &  \frac{1}{2N} & \half
+    \end{pmatrix}
+\end{equation}
+Let us now study the limiting properties of the Ehrenfest chain.
