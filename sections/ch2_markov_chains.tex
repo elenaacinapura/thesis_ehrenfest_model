@@ -121,14 +121,12 @@ Thus, the components of the limiting distribution give the probabilities to find
     \end{pmatrix}
 \end{equation}
 This is quite straightforward indeed, thanks to corollary \ref{th:evolution_complete}:
-\begin{equation}
-    \begin{aligned}
+    \begin{align}
         \pi_i
          & = \lim_{t \rightarrow \infty} \prob{X_t = x_i}                                                       \\
          & = \lim_{t \rightarrow \infty} (\f_t)_i                                                               \\
          & = \lim_{t \rightarrow \infty} P^t \f_0         & \text{for corollary \ref{th:evolution_complete}}
-    \end{aligned}   
-\end{equation}
+    \end{align}   
 Since, by definition, the $\pi_i$ must not depend on $\f_0$, then we can choose as $\f_0$ the vectors of the canonical basis of $\mathbb{R}^M$; each $i$-th element of the canonical basis is then transformed in the $i$-th column of $P^t$, and thus we obtain the above equality.
 
 \medskip
@@ -238,8 +236,7 @@ There is a a fundamental relationship connecting the mean visit frequency and th
         \p = P^t \p  \quad \text{or, for the components}\quad \pi_i = \sum_{j = 1}^M P_{ij}^t \pi_{j}
     \end{equation}
     Then
-    \begin{equation}
-        \begin{aligned}
+        \begin{align}
             \pi_i 
                 &  = \frac{1}{T} \sum_{t = 1}^T \pi_i && \forall t\text{, then also}\\
                 &  = \lim_{T \rightarrow \infty} \frac{1}{T} \sum_{t = 1}^T \pi_i \\
@@ -247,6 +244,5 @@ There is a a fundamental relationship connecting the mean visit frequency and th
                 & = \sum_{j = 1}^M \pi_j \left(\lim_{T \rightarrow \infty}  \frac{1}{T}  \sum_{t = 1}^T P_{ij}^t \right) && \text{changing the order of finite sums} \\
                 & = \sum_{j = 1}^M \pi_j \nu_i && \text{by \hyperref[def:nu-tau]{definition of $\nu$}} \\
                 & = \nu_i && \text{for \hyperref[def:distribution] {property 2  of the distributions}}
-        \end{aligned}
-    \end{equation}
+        \end{align}
 \end{proof}
