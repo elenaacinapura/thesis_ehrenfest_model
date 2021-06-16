@@ -1,7 +1,7 @@
 \chapter{The Formalism of Markov Chains}
 \label{ch:markov_chains}
 \section{Definitions}
-Consider a finite set $\Space$ with dimension $M$ and consider a system whose state can take values in $\Space$; $\Space$ will therefore be called \emph{state space}. Let us indicate the state of the system at time $t$ with the variable $X_t$, and let us furthermore discretize the time, taking $t \in \mathbb{N}$. Suppose now that system state changes randomly in time, so that $X_t$ is a random variable. Let
+Consider a finite set $\Space$ with dimension $M$ and consider a system whose state can take values in $\Space$; $\Space$ will be called therefore \emph{state space}. Let us indicate the state of the system at time $t$ with the variable $X_t$, and let us furthermore discretize the time, taking $t \in \mathbb{N}$. Suppose now that system state changes randomly in time, so that $X_t$ is a random variable. Let
 \begin{equation}
     \prob{X_t = x} \quad , \quad x \in \Space
 \end{equation}
@@ -12,11 +12,9 @@ be the probability that the system is found the state labeled by $x$ at time $t$
     \begin{equation}
         \prob{ X_t = x_t | X_{t-1} = x_{t-1}, X_{t-2} = x_{t-2}, \dots, X_0 = x_0 } = \prob { X_t = x_t | X_{t-1} = x_{t-1} } \quad
     \end{equation}
+The above stated property, usually called \emph{Markov property} but also, more evocatively, \emph{memorylessness}, basically states that the probability for the system to be in a certain state at a given time only depends on the state of the time before. This means that the system "has no memory of the past": only the current state can affect the future, and not the way the system has reached it.
 \end{ndef}
 
-The above stated property, usually called \emph{Markov property} but also, more evocatively, \emph{memorylessness}, basically states that the probability for the system to be in a certain state at a give time only depends on the state of the time before. This means that the system "has no memory of the past": only the current state can affect the future, and not the way the system has reached it.
-
-\smallskip
 We will now consider a particular kind of Markov chains, namely \emph{time-homogeneous} ones.
 \begin{ndef} [Time-homogeneous Markov chain] A Markov chain is called time-homogeneous if the transition probability to some certain state to another doesn't depend on time, i.e. if
     \begin{equation}
@@ -24,13 +22,13 @@ We will now consider a particular kind of Markov chains, namely \emph{time-homog
     \end{equation}
 \end{ndef}
 
-As a consequence of time-homogeneity, we are allowed to refer in general to \emph{the} probability of the transition from state $x$ to state $y$, since this quantity does not depend on time and is therefore well defined. For the remainder of this thesis we will only be dealing with time-homogeneous Markov chains.
+As a consequence of time-homogeneity, we are allowed to refer in general to \emph{the} probability of the transition from state $x$ to state $y$, since this quantity does not depend on time and is therefore well defined. For the remainder of this chapter we will only be dealing with time-homogeneous Markov chains.
 
 \section{Distributions, stochastic matrices and evolution}
 Having defined the basic properties of a Markov chain, we will now introduce a powerful means of representing the state and the evolution of a system in a Markov process, which is the use of distribution vectors and stochastic matrices. Since we are considering \emph{discrete} chains, the number of the possible states if finite, and thus the idea is to use a vector to represent the probabilities for the system to be in the possible states at a certain time, and a matrix to represent the probabilities of all the possible transitions between states. Let us now formalize these concepts.
 
 \smallskip
-Consider a state space $\Space$ with dimention $M$, and label the possible states with the symbols $x_1, x_2, \dots, x_M$.
+From now on, consider a state space $\Space$ with dimention $M$, and label the possible states with the symbols $x_1, x_2, \dots, x_M$.
 
 \begin{ndef}[Distribution vector] \label{def:distribution}
     A distribution vector, also simply called \emph{distribution}, is a vector $\vec{f} \in \mathbb{R}^M$ with the following properties:
@@ -44,10 +42,10 @@ Consider a state space $\Space$ with dimention $M$, and label the possible state
     Notice that this is a good definition, since the sum of the probabilities of all the possible states is 1, as it should be, and these probabilities are all positive numbers.
 \end{ndef}
 
-Distribution vectors contain all the necessary information to completely describe the state of a system. If, for instance, it is certain that the system is in the state $x_k$, then all the components of its distribution will be 0, except for the $k$-th one, which will be 1. In general, however, the components of a distribution will be nonzero.
-Furthermore, since we will be dealing with the time evolution of the system, we will add a subscript to the distributions to indicate the time that the distribution refers to: $\vec{f}_t$, for instance, will be the distribution of the system at time $t$.
+Distribution vectors contain all the necessary information to completely describe the state of a system. If, for instance, it is certain that the system is in the state $x_k$, then all the components of its distribution will be 0, except for the $k$-th one, which will be 1.
 
-\smallskip
+Since we will be dealing with the time evolution of the system, we will add a subscript to the distributions to indicate the time it refers to: $\vec{f}_t$, for instance, will be the distribution of the system at time $t$.
+
 Having seen how to represent the probability distribution of a state, let us now concentrate on how to represent transition probabilities.
 
 \begin{ndef} [Stochastic matrix] \label{def:stoc_matrix}
@@ -211,7 +209,7 @@ Consider a system involved in a Markov process on state space $\Space$ and suppo
     \end{equation}
     independently on the initial state -- for this reason why have dropped the indication of the the initial state.
     We furthermore define the \emph{mean recurrence time} to state $x_i$ as
-    \begin{equation}
+    \begin{equation} \label{def:mean_rec_time}
         \tau_i \equiv \frac{1}{v_i}
     \end{equation}
 \end{ndef}
