@@ -1,37 +1,38 @@
 \chapter{The Formalism of Markov Chains}
+% introduction to this chapter
 \label{ch:markov_chains}
 \section{Definitions}
 Consider a finite set $\Space$ with dimension $M$ and consider a system whose state can take values in $\Space$; $\Space$ will be called therefore \emph{state space}. Let us indicate the state of the system at time $t$ with the variable $X_t$, and let us furthermore discretize the time, taking $t \in \mathbb{N}$. Suppose now that system state changes randomly in time, so that $X_t$ is a random variable. Let
 \begin{equation}
     \prob{X_t = x} \quad , \quad x \in \Space
 \end{equation}
-be the probability that the system is found the state labeled by $x$ at time $t$.
+be the probability that the system is found in the state labeled by $x$ at time $t$.
 
 \begin{ndef} [Discrete Markov chain] \label{def:markov-chain}
-    A sequence of states $\{X_t\}_{t\in \mathbb{N}}$ on a discrete state space $\Space$ is said a \emph{discrete Markov chain} if the following property holds $\forall t \in \mathbb N$ and $\forall x_0, \dots, x_t \in \Space$:
+    A sequence of states $\{X_t\}_{t\in \mathbb{N}}$ on a discrete state space $\Space$ is said a \emph{discrete Markov chain} if the following property holds $\forall t \in \mathbb N$ and $\forall x_0, \dots, x_t \in \Space$.
     \begin{equation}
         \prob{ X_t = x_t | X_{t-1} = x_{t-1}, X_{t-2} = x_{t-2}, \dots, X_0 = x_0 } = \prob { X_t = x_t | X_{t-1} = x_{t-1} } \quad
     \end{equation}
-The above stated property, usually called \emph{Markov property} but also, more evocatively, \emph{memorylessness}, basically states that the probability for the system to be in a certain state at a given time only depends on the state of the time before. This means that the system "has no memory of the past": only the current state can affect the future, and not the way the system has reached it.
+The above stated property, usually called \emph{Markov property} but also, more evocatively, \emph{memorylessness}, states that the probability for the system to be in a certain state at a given time instant only depends on the state of the time instant before. This means that the system ``has no memory of the past'': the current state is only affected by the previous state, regardless of the way is was reached.
 \end{ndef}
 
-We will now consider a particular kind of Markov chains, namely \emph{time-homogeneous} ones.
-\begin{ndef} [Time-homogeneous Markov chain] A Markov chain is called time-homogeneous if the transition probability to some certain state to another doesn't depend on time, i.e. if
+We will now consider a particular kind of Markov chains, called time-homogeneous.
+\begin{ndef} [Time-homogeneous Markov chain] A Markov chain is called time-homogeneous if the transition probability between any two given states doesn't depend on time, i.e. if
     \begin{equation}
         \prob {X_{t+1} = y | X_{t} = x} = \prob {X_{t} = y | X_{t-1} = x} \quad \quad \forall t\in \mathbb{N}, \forall y, x \in \Space
     \end{equation}
 \end{ndef}
 
-As a consequence of time-homogeneity, we are allowed to refer in general to \emph{the} probability of the transition from state $x$ to state $y$, since this quantity does not depend on time and is therefore well defined. For the remainder of this chapter we will only be dealing with time-homogeneous Markov chains.
+As a consequence of time-homogeneity, we are allowed to refer in general to \emph{the} probability of the transition from state $x$ to state $y$: this quantity does not depend on time and is therefore well defined. For the remainder of this chapter we will only be dealing with time-homogeneous Markov chains.
 
 \section{Distributions, stochastic matrices and evolution}
-Having defined the basic properties of a Markov chain, we will now introduce a powerful means of representing the state and the evolution of a system in a Markov process, which is the use of distribution vectors and stochastic matrices. Since we are considering \emph{discrete} chains, the number of the possible states if finite, and thus the idea is to use a vector to represent the probabilities for the system to be in the possible states at a certain time, and a matrix to represent the probabilities of all the possible transitions between states. Let us now formalize these concepts.
+We will now introduce a powerful means of representing the state and the evolution of a system in a Markov process, which is the use of distribution vectors and stochastic matrices. Since we are considering \emph{discrete} chains with a finite number of possible states, we can use a vector to represent the probabilities for the system to be in the possible states at a certain time, and a matrix to represent the probabilities of all the possible transitions between states. Let us now formalize these concepts.
 
 \smallskip
-From now on, consider a state space $\Space$ with dimention $M$, and label the possible states with the symbols $x_1, x_2, \dots, x_M$.
+From now on, consider a state space $\Space$ with dimension $M$, and label the possible states with the symbols $x_1, x_2, \dots, x_M$.
 
 \begin{ndef}[Distribution vector] \label{def:distribution}
-    A distribution vector, also simply called \emph{distribution}, is a vector $\vec{f} \in \mathbb{R}^M$ with the following properties:
+    A distribution vector, also simply called \emph{distribution}, is a vector $\vec{f} \in \mathbb{R}^M = (f_1, \dots, f_M)$ with the following properties:
     \begin{center}
         \begin{enumerate}
             \item $f_i \geq 0 \quad \forall i = 1,\dots, M$
@@ -39,21 +40,21 @@ From now on, consider a state space $\Space$ with dimention $M$, and label the p
             \item $f_i = \prob {X = x_i} \quad \forall i = 1,\dots, M$
         \end{enumerate}
     \end{center}
-    Notice that this is a good definition, since the sum of the probabilities of all the possible states is 1, as it should be, and these probabilities are all positive numbers.
+    Notice that this is a good definition, since the sum of the probabilities of all the possible states is 1, and these probabilities are all positive numbers.
 \end{ndef}
 
 Distribution vectors contain all the necessary information to completely describe the state of a system. If, for instance, it is certain that the system is in the state $x_k$, then all the components of its distribution will be 0, except for the $k$-th one, which will be 1.
 
-Since we will be dealing with the time evolution of the system, we will add a subscript to the distributions to indicate the time it refers to: $\vec{f}_t$, for instance, will be the distribution of the system at time $t$.
+Since we will be dealing with the time evolution of the system, we will add a subscript to the distributions to indicate the time they refer to: $\vec{f}_t$, for instance, will be the distribution of the system at time $t$.
 
-Having seen how to represent the probability distribution of a state, let us now concentrate on how to represent transition probabilities.
+Having seen how to represent the probability distribution of a state, let us now focus on how to represent transition probabilities.
 
 \begin{ndef} [Stochastic matrix] \label{def:stoc_matrix}
     A stochastic (or transition) matrix is a matrix $P \in \mathbb{R}^{M\times M}$ with the following properties:
     \begin{center}
         \begin{enumerate}
             \item $P_{ij} \geq 0 \quad \forall i,j = 1,\dots,M$
-            \item $\sum_{i = 0}^M P_{ij} = 1 \quad \forall j = 0,\dots,M$
+            \item $\sum_{i = 0}^M P_{ij} = 1 \quad \forall j = 1,\dots,M$
             \item $P_{ij} = \prob {X_{t+1} = x_i | X_t = x_j } \quad \forall i,j = 1,\dots,M; \forall t\in \mathbb N$
         \end{enumerate}
     \end{center}
@@ -62,7 +63,7 @@ Having seen how to represent the probability distribution of a state, let us now
 Notice that while distributions depend on time, stochastic matrices do not, since we are considering time-homogeneous Markov chains, and therefore the transition probabilities are time-independent.
 
 \smallskip
-Suppose now that a system is described at a certain time by a distribution $\vec{f}_t$. Then, in order to obtain the distribution of the system in the following times, one can use the stochastic matrix thanks to the rule of conditional probabilities, as it is shown in the following theorem.
+Suppose now that a system is described at a certain time by a distribution $\vec{f}_t$. Then, in order to obtain the distribution of the system in the following times instants, one can use the stochastic matrix as shown in the following theorem.
 
 \begin{theorem} \label{th:evolution_simple}
     Let $\f_t$ be the distribution of the system at time $t$. Then, the distribution at time $t + 1$ given by
@@ -74,23 +75,23 @@ Suppose now that a system is described at a certain time by a distribution $\vec
     For all $i = 1,\dots,M$ it holds that
     \begin{align}
         (\f_t)_i
-         & = \prob {X_{t+1} = x_i }                                           &  & \text{for the def. of $\f$}                                     \\
-         & = \sum_{j = 0}^M \prob{X_{t+1} = x_i | X_t = x_j} \prob{X_t = x_j} &  & \text{for the rule of conditional probabilities}                \\
-         & = \sum_{j = 0}^M P_{ij} (\f_t)_j                                   &  & \text{for the def. of $P$ and $\f$} \label{eq:matmul1}          \\
-         & = (P \f_t)_i                                                       &  & \text{for the def. of matrix multiplication} \label{eq:matmul2}
+         & = \prob {X_{t+1} = x_i }                                           &  & \text{definition of $\f$}                                     \\
+         & = \sum_{j = 0}^M \prob{X_{t+1} = x_i | X_t = x_j} \prob{X_t = x_j} &  & \text{law of total probability}                \\
+         & = \sum_{j = 0}^M P_{ij} (\f_t)_j                                   &  & \text{definitions of $P$ and $\f$} \label{eq:matmul1}          \\
+         & = (P \f_t)_i                                                       &  & \text{fdefinition of matrix multiplication} \label{eq:matmul2}
     \end{align}
 
 \end{proof}
 
 \begin{corollary} \label{th:evolution_complete}
-    Let $\f_0$ be the initial distribution of the system, at time 0. Then, the distribution at time $t$ given by
+    Let $\f_0$ be the distribution of the system at time 0. Then, the distribution at time $t$ is given by
     \begin{equation}
         \f_t = P^t \f_0
     \end{equation}
 \end{corollary}
 
 \begin{remark}
-    It is clear from the proof of theorem \ref{th:evolution_simple}, in particular from eq. \ref{eq:matmul1}, that it is useful to interpret distributions as \emph{column vectors}. This, indeed, follows from the fact that we have defined $P$ such that the sum on its \emph{columns} must always equal 1. However, it is also a common practice to define $P$ such that the sum on it \emph{rows} must equal 1; after this latter convention, then, distributions are interpreted as row vectors and one obtains that the law fot the evolution is $\f_{t+1} = \f_t P$. We decided to adhere to the "column-based" convention because it resembles the formalism of quantum mechanics, where operators are multiplied by the state vectors, and not the other way around; this convention results therefore more natural from a physicist's point of view.
+    It is clear from the proof of Theorem \ref{th:evolution_simple}, and in particular from eq. \ref{eq:matmul1}, that it is useful to interpret distributions as \emph{column vectors}. This follows from the fact that we have defined $P$ such that the sum on its \emph{columns} must always equal 1. However, it is also a common practice to define $P$ such that the sum on its \emph{rows} must equal 1; after this latter convention, distributions are interpreted as row vectors and the law fot the evolution is $\f_{t+1} = \f_t P$. We decided to adhere to the ``column-based" convention because it resembles the formalism of quantum mechanics, where operators are multiplied by the state vectors and not the other way around; this convention results therefore more natural from a physicist's point of view.
 \end{remark}
 
 \section{Limiting behaviour}
