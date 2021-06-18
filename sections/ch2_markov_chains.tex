@@ -13,11 +13,11 @@ be the probability that the system is found in the state labeled by $x$ at time 
     \begin{equation}
         \prob{ X_t = x_t | X_{t-1} = x_{t-1}, X_{t-2} = x_{t-2}, \dots, X_0 = x_0 } = \prob { X_t = x_t | X_{t-1} = x_{t-1} } \quad
     \end{equation}
-The above stated property, usually called \emph{Markov property} but also, more evocatively, \emph{memorylessness}, states that the probability for the system to be in a certain state at a given time instant only depends on the state of the time instant before. This means that the system ``has no memory of the past'': the current state is only affected by the previous state, regardless of the way is was reached.
+The above stated property, usually called \emph{Markov property} but also, more evocatively, \emph{memorylessness}, states that the probability for the system to be in a certain state at a given time instant only depends on the state of the time instant before. This means that the system \enquote{has no memory of the past}: the current state is only affected by the previous state, regardless of the way is was reached.
 \end{ndef}
 
 We will now consider a particular kind of Markov chains, called time-homogeneous.
-\begin{ndef} [Time-homogeneous Markov chain] A Markov chain is called time-homogeneous if the transition probability between any two given states doesn't depend on time, i.e. if
+\begin{ndef} [Time-homogeneous Markov chain] A Markov chain is called time-homogeneous if the transition probability between any two given states doesn't depend on time, \ie if
     \begin{equation}
         \prob {X_{t+1} = y | X_{t} = x} = \prob {X_{t} = y | X_{t-1} = x} \quad \quad \forall t\in \mathbb{N}, \forall y, x \in \Space
     \end{equation}
@@ -35,7 +35,7 @@ From now on, consider a state space $\Space$ with dimension $M$, and label the p
     A distribution vector, also simply called \emph{distribution}, is a vector $\vec{f} \in \mathbb{R}^M = (f_1, \dots, f_M)$ with the following properties:
     \begin{center}
         \begin{enumerate}
-            \item $f_i \geq 0 \quad \forall i = 1,\dots, M$
+            \item $ f_i \geq 0 \quad \forall i = 1,\dots, M $
             \item $\sum_{i=0}^M f_i = 1$
             \item $f_i = \prob {X = x_i} \quad \forall i = 1,\dots, M$
         \end{enumerate}
@@ -66,7 +66,7 @@ Notice that while distributions depend on time, stochastic matrices do not, sinc
 Suppose now that a system is described at a certain time by a distribution $\vec{f}_t$. Then, in order to obtain the distribution of the system in the following times instants, one can use the stochastic matrix as shown in the following theorem.
 
 \begin{theorem} \label{th:evolution_simple}
-    Let $\f_t$ be the distribution of the system at time $t$. Then, the distribution at time $t + 1$ given by
+    Let $\f_t$ be the distribution of the system at time $t$. Then, the distribution at time $t + 1$ is given by
     \begin{equation}
         \f_{t+1} = P \f_t
     \end{equation}
@@ -78,7 +78,7 @@ Suppose now that a system is described at a certain time by a distribution $\vec
          & = \prob {X_{t+1} = x_i }                                           &  & \text{definition of $\f$}                                     \\
          & = \sum_{j = 0}^M \prob{X_{t+1} = x_i | X_t = x_j} \prob{X_t = x_j} &  & \text{law of total probability}                \\
          & = \sum_{j = 0}^M P_{ij} (\f_t)_j                                   &  & \text{definitions of $P$ and $\f$} \label{eq:matmul1}          \\
-         & = (P \f_t)_i                                                       &  & \text{fdefinition of matrix multiplication} \label{eq:matmul2}
+         & = (P \f_t)_i                                                       &  & \text{definition of matrix multiplication} \label{eq:matmul2}
     \end{align}
 
 \end{proof}
@@ -91,25 +91,25 @@ Suppose now that a system is described at a certain time by a distribution $\vec
 \end{corollary}
 
 \begin{remark}
-    It is clear from the proof of Theorem \ref{th:evolution_simple}, and in particular from eq. \ref{eq:matmul1}, that it is useful to interpret distributions as \emph{column vectors}. This follows from the fact that we have defined $P$ such that the sum on its \emph{columns} must always equal 1. However, it is also a common practice to define $P$ such that the sum on its \emph{rows} must equal 1; after this latter convention, distributions are interpreted as row vectors and the law fot the evolution is $\f_{t+1} = \f_t P$. We decided to adhere to the ``column-based" convention because it resembles the formalism of quantum mechanics, where operators are multiplied by the state vectors and not the other way around; this convention results therefore more natural from a physicist's point of view.
+    It is clear from the proof of Theorem \ref{th:evolution_simple}, and in particular from eq. \ref{eq:matmul1}, that it is useful to interpret distributions as \emph{column vectors}. This follows from the fact that we have defined $P$ such that the sum on its \emph{columns} must always be equal to 1. However, it is also a common practice to define $P$ such that the sum on its \emph{rows} must be equal to 1; after this latter convention, distributions are interpreted as row vectors and the law for the evolution is $\f_{t+1} = \f_t P$. We decided to adhere to the \enquote{column-based} convention because it resembles the formalism of quantum mechanics, where operators are multiplied by the state vectors and not the other way around; this convention results therefore more natural from a physicist's point of view.
 \end{remark}
 
 \section{Limiting behaviour}
-We now draw our attention to a fundamental aspect of Markov chains. Suppose that the initial distribution of a system, $\f_0$, is completely known, i.e. that we know the probabilities for the system to be in each of the possible states $x_1, x_2, \dots, x_M$. We know how to compute che evolution of these probabilities time step after time step using the stochastic matrix, but we might want to ask ourself the following question:
+We now draw our attention to a fundamental aspect of Markov chains. Suppose that the initial distribution of a system, $\f_0$, is completely known, \ie that we know the probabilities for the system to be in each of the possible states $x_1, x_2, \dots, x_M$. We know how to compute the evolution of these probabilities time for any time step using the stochastic matrix, but we might want to ask ourselves the following question:
 \begin{quote}
-    \emph{Is there a distribution that the system will eventually reach, asymptotically? If it does, which distribution is this?}
+    \emph{Is there a distribution that the system will eventually reach, asymptotically? If there is, which distribution is it?}
 \end{quote}
-In other words, this question aims at knowing whether the system can reach \emph{equilibrium}, i.e. a configuration in which the probabilities of the possible states are constant in time.
-It should be clear why one should be interested in this question: in most real-life applications, one is usually interested in the properties of a system in conditions of equilibrium, after the system has evolved for a sufficiently long time. It is therefore useful to understand the asymptotic (or \emph{limiting}) behaviour of the system, and in order tackle this problem we will introduce some concepts known as \emph{limiting distribution} and \emph{stationary distribution}.
+In other words, this question aims at knowing whether the system can reach \emph{equilibrium}, \ie a configuration in which the probabilities of the possible states are constant in time.
+In most real-life applications, indeed, one is usually interested in the properties of a system in conditions of equilibrium, after the system has evolved for a sufficiently long time; hereafter it is useful to understand the asymptotic (or \emph{limiting}) behaviour of the system. In order tackle this problem we will introduce the concepts of \emph{limiting distribution} and \emph{stationary distribution}.
 
 \begin{ndef}[Limiting distribution]
-    Given a Markov chain with stochastic matrix $P$, its limiting distribution $\p$, if it does exist, is defined as the distribution whose components are satisfy
+    Given a Markov chain with stochastic matrix $P$, its limiting distribution $\p$, if it does exist, is defined as the distribution whose components satisfy
     \begin{equation}
-        \pi_i \equiv \lim_{t \rightarrow \infty} \prob{X_t = x_i} \quad \forall i=1,\dots,M
+        \pi_i \coloneqq \lim_{t \rightarrow \infty} \prob{X_t = x_i} \quad \forall i=1,\dots,M
     \end{equation}
     independently of the initial distribution of the chain.
 \end{ndef}
-Thus, the components of the limiting distribution give the probabilities to find the system in a given state asymptotically, when the system will have reached equilibrium. An interesting feature of the limiting distribution is that, if it exists, then the matrix obtained by $\lim_{t \rightarrow \infty} P^t$ has each column equal to the limiting distribution:
+Thus, the meaning of the limiting distribution is that its $i$-th component represents the probability that the system will be in the $i$-th state at equilibrium. An interesting feature of the limiting distribution is that, if it exists, then the matrix obtained by $\lim_{t \rightarrow \infty} P^t$ has each column equal to the limiting distribution:
 \begin{equation}
     \text{if $\p$ exists, then } \quad \quad \lim_{t \rightarrow \infty} P^t =
     \begin{pmatrix}
@@ -119,14 +119,14 @@ Thus, the components of the limiting distribution give the probabilities to find
         \pi_M  & \pi_M  & \dots  & \pi_M
     \end{pmatrix}
 \end{equation}
-This is quite straightforward indeed, thanks to corollary \ref{th:evolution_complete}:
+This statement is a consequence of Corollary \ref{th:evolution_complete}:
     \begin{align}
         \pi_i
          & = \lim_{t \rightarrow \infty} \prob{X_t = x_i}                                                       \\
          & = \lim_{t \rightarrow \infty} (\f_t)_i                                                               \\
          & = \lim_{t \rightarrow \infty} P^t \f_0         & \text{for corollary \ref{th:evolution_complete}}
     \end{align}   
-Since, by definition, the $\pi_i$ must not depend on $\f_0$, then we can choose as $\f_0$ the vectors of the canonical basis of $\mathbb{R}^M$; each $i$-th element of the canonical basis is then transformed in the $i$-th column of $P^t$, and thus we obtain the above equality.
+By definition $\pi_i$ must not depend on $\f_0$, therefore we can choose as $\f_0$ the vectors of the canonical basis of $\mathbb{R}^M$; each $i$-th element of the canonical basis is then transformed in the $i$-th column of $P^t$, obtaining the above equality.
 
 \medskip
 As mentioned before, another important concept that we have to introduce in the context of limiting behaviour is the \emph{stationary distribution}.
@@ -138,13 +138,13 @@ As mentioned before, another important concept that we have to introduce in the 
     \end{equation}
     Hence, the stationary distribution is the \text{eigenvector} of the stochastic matrix with unitary eigenvalue. If the system happens to be found in the stationary distribution, it will remain in that same state forever.
 \end{ndef}
-As one might guess, the limiting distribution and the stationary distribution are closely related. A first relationship between them is expressed by the following theorem.
+The limiting distribution and the stationary distribution are closely related. A first relationship between them is expressed by the following theorem.
 
 \begin{theorem} \label{th:limit-stat}
     Suppose that a Markov chain with stochastic matrix $P$ has a limiting distribution $\p$. Then $\p$ is also a stationary distribution for the chain.
 \end{theorem}
 \begin{proof}
-    We have that, independently of the initial distribution $\f_0$:
+    Independently of the initial distribution $\f_0$, the following holds.
     \begin{align}
         P \p
          & = P \lim_{t \rightarrow \infty} P^t \f_0  \\
@@ -152,16 +152,15 @@ As one might guess, the limiting distribution and the stationary distribution ar
          & = \p
     \end{align}
 \end{proof}
-Unfortunately, the other implication does not always hold. That is, a Markov chain might well have a stationary distribution, but $\lim_{t \rightarrow \infty} P^t$ may not exist anyway. First of all, one must assure that such stationary distribution is unique, otherwise the limit would not be unique; even then, however, other assumptions are needed in order to guarantee convergence. Fortunately, the theorem named after Perron and Frobenius states when the stationary distribution of a chain is also its limiting distribution, but before we proceed with its statement we must give some more definitions. We will not prove the theorem, since that would be a lengthy task that would draw our attention away from the physical applications of the Markov chains, so we will also try to give an intuitive and practical definition of the following properties, rather than a strictly formal one.
-% Agggiungere reference a dove trovare i dettagli dei calcoli
+Unfortunately, the inverse implication does not always hold. That is, a Markov chain might well have a stationary distribution, but $\lim_{t \rightarrow \infty} P^t$ might not exist anyway. First of all, one must assure that such stationary distribution is unique, otherwise the limit would not be unique; even then, however, other assumptions are needed in order to guarantee convergence. Fortunately, the Theorem named after Perron and Frobenius states the sufficient conditions such that the stationary distribution of a chain is unique and coincides with the limiting distribution. Before presenting the statement of the Theorem we will give some preliminary definitions. 
 
 \begin{ndef} [Irreducible Markov chain]
-    A Markov chain is said to be irreducible if every state can lead, sooner or later, to every other state. That is, no matter what the initial state for the system is at $t=0$, every other state has a nonzero probability to be reached at some time $t>0$.
+    A Markov chain is said to be irreducible if, starting from any state, there exist a number of time steps that allows to reach any other state. That is, no matter what the initial state for the system is at $t=0$, every other state has a nonzero probability to be reached at some instant $t>0$.
 \end{ndef}
 \begin{ndef} [Period of a state and aperiodicity]
-    Given a state $x_i \in \Space$, its \emph{period} $k_i$ is defined as the greatest common divisor (gcd) of the times at which $x_i$ can be reached, given that the system started in $x_i$ at $t=0$. That is,
+    Given a state $x_i \in \Space$, its \emph{period} $k_i$ is defined as the greatest common divisor (gcd) of the time instants at which $x_i$ can be reached, given that the system started in $x_i$ at $t=0$. That is,
     \begin{equation}
-        k_i \equiv \text{gcd} \left\{ t>0 : \prob{X_t = x_i | X_0 = x_i} > 0 \right\}
+        k_i \coloneqq \text{gcd} \left\{ t\in \mathbb{N}^+ : \prob{X_t = x_i | X_0 = x_i} > 0 \right\}
     \end{equation}
     
 \end{ndef}
@@ -171,32 +170,32 @@ Unfortunately, the other implication does not always hold. That is, a Markov cha
 \begin{ndef} [Ergodicity]
     A Markov chain that is both irreducible and aperiodic is said \emph{ergodic}.
 \end{ndef}
-Now we are finally equipped to state the Perron-Frobenius theorem.
+Now we are finally equipped to state the Perron-Frobenius Theorem.
 
 \begin{theorem}[Perron-Frobenius] \label{th:perron-frobenius}
-    Suppose that a Markov chain is ergodic. Then it has a unique stationary distribution and a limiting distribution, and the two coincide.
+    Suppose that a Markov chain is ergodic. Then, it has a unique stationary distribution and a limiting distribution, and the two coincide.
 \end{theorem}
 
 \medskip
-So we have finally found an answer to our original question: if we can verify that a Markov chain is ergodic, then all we have to do is to find its stationary distribution (i.e., the eigenvector with unitary eigenvalue), and then asymptotic distribution of the system is automatically known. Finding eigenvectors and eigenvalues is usually a very feasible task and there are plenty of libraries that offer optimized routines to perform that.
+So we have finally found an answer to our original question: if we can verify that a Markov chain is ergodic, then all we have to do is to find its stationary distribution, \ie the eigenvector with unitary eigenvalue, and then the asymptotic distribution of the system is automatically known. ***Finding eigenvectors and eigenvalues is usually a very feasible task for computers and there are plenty of libraries that offer optimized routines to perform that.***
 
-In the last section of this chapter, then, we will show some interesting information that one can obtain about a Markov chain, thanks to the knowledge of the limiting distribution.
 
 \section{Mean recurrence time}
-Suppose that a system described by a Markov process is found at $t = 0$ in some state $x_i$. An interesting question at this point could be: what is the average time that one should have to wait, before the system will come back to that same state? Alternatively, a closely related question might be: what is the proportion of time that the system is expected to spend in state $x_i$?
+***In the next section, then, we will assume that the limiting distribution is known and show some interesting quantities that it allows to calculate.***
+Suppose that a system described by a Markov process is found at $t = 0$ in some state $x_i$. We might be interested in asking: what is the average time that one should have to wait, before the system will come back to that same state? Alternatively, what is the proportion of time that the system is expected to spend in state $x_i$?
 
 As one might expect, the knowledge of the limiting behaviour of the Markov chain can help answer these questions, and this section aims at doing that. As before, we will start with some simple definitions, and then give the relevant theorems.
 
 \medskip
-Consider a system involved in a Markov process on state space $\Space$ and suppose that the system evolves for $T$ time steps; let the sequence $\{X_0, X_1, \dots, X_T\}$ describe the state of the system at the various time instants.
+Consider a system involved in a Markov process on state space $\Space$ and suppose that the system evolves for $T$ time steps; let the sequence $(X_0, X_1, \dots, X_T)$ describe the state of the system at the various time instants.
 \begin{ndef} [Number of visits]
-    Given a state $x_i \in \Space$, we define $n_i (X_0, T)$ as the number of times that system happens to be in state $x_i$, given that the initial state was $X_0$ and that the system evolved for $T$ time steps. This means:
+    Given a state $x_i \in \Space$, we define the random variable $n_i (X_0, T)$ as the number of time instants that system happens to be in state $x_i$, given that the initial state was $X_0$ and that the system evolved for $T$ time steps. This means:
     \begin{equation}
-        n_i (X_0, T) \equiv \sum_{t = 1}^T \mathbb{1}_i(X_t) \quad , \quad \text{given a certain }X_0
+        n_i (X_0, T) \coloneqq \sum_{t = 1}^T \mathds{1}_i(X_t) \quad , \quad \text{given a certain }X_0
     \end{equation}
     where
     \begin{equation}
-        \mathbb{1}_i(X_t) =
+        \mathds{1}_i(X_t) =
         \begin{cases}
             1 & \text{if $X_t = x_i$} \\
             0 & \text{otherwise}
@@ -206,18 +205,18 @@ Consider a system involved in a Markov process on state space $\Space$ and suppo
 \begin{ndef} [Mean visit frequency and mean recurrence time] \label{def:nu-tau}
     Given a state $x_i \in \Space$, we define its \emph{mean visit frequency} as
     \begin{equation}
-        \nu_i \equiv \lim_{T\rightarrow \infty} \frac{1}{T} \mathbbm{E} \left[ n_i (T) \right]
+        \nu_i \coloneqq \lim_{T\rightarrow \infty} \frac{1}{T} \mathds{E} \left[ n_i (T) \right]
     \end{equation}
-    independently on the initial state -- for this reason why have dropped the indication of the the initial state.
-    We furthermore define the \emph{mean recurrence time} to state $x_i$ as
+    independently on the initial state --- for this reason why have dropped the indication of the initial state.
+    We furthermore define the \emph{mean recurrence time} of state $x_i$ as
     \begin{equation} \label{def:mean_rec_time}
-        \tau_i \equiv \frac{1}{v_i}
+        \tau_i \coloneqq \frac{1}{\nu_i}
     \end{equation}
 \end{ndef}
-Notice that the definition of the mean recurrence time can be interpreted as the \emph{average} time one has to wait before the state can return to a given state.
+Notice that the definition of the mean recurrence time can be interpreted as the \emph{average} time one has to wait before the system can return to a given state.
 
 \medskip
-There is a a fundamental relationship connecting the mean visit frequency and the mean recurrence time to the limiting distribution of the chain.
+There is a a fundamental relationship connecting the mean visit frequency and the mean recurrence time to the limiting distribution of the chain, which is described by the following theorem.
 
 \begin{theorem}
     Suppose that a Markov chain has a limiting distribution $\p$. Then the mean visit frequency of each state is given by the corresponding component of the limiting distribution:
@@ -228,20 +227,20 @@ There is a a fundamental relationship connecting the mean visit frequency and th
 \begin{proof}
    Suppose that the system starts at $X_0 = x_j$; then 
     \begin{equation} \label{eq:expected_value}
-        \mathbbm{E} [ n_i (X_0 = x_j, T)] = \sum_{t = 1}^T \prob{X_t = x_i | X_0 = x_j} = \sum_{t = 1}^T P_{ij}^t
+        \mathds{E} [ n_i (X_0 = x_j, T)] = \sum_{t = 1}^T \prob{X_t = x_i | X_0 = x_j} = \sum_{t = 1}^T P_{ij}^t
     \end{equation} 
-    Now, if the chain has a limiting distribution $\p$, then after theorem \ref{th:limit-stat} $\p$ is also a stationary distribution for the matrix $P$. This implies that, $\forall t$
+    Now, if the chain has a limiting distribution $\p$, then after Theorem \ref{th:limit-stat} $\p$ is also a stationary distribution for the matrix $P$. This implies that, for each $t\in \mathbb{N}$
     \begin{equation} \label{eq:property_pi}
         \p = P^t \p  \quad \text{or, for the components}\quad \pi_i = \sum_{j = 1}^M P_{ij}^t \pi_{j}
     \end{equation}
     Then
         \begin{align}
             \pi_i 
-                &  = \frac{1}{T} \sum_{t = 1}^T \pi_i && \forall t\text{, then also}\\
+                &  = \frac{1}{T} \sum_{t = 1}^T \pi_i && \forall T\\
                 &  = \lim_{T \rightarrow \infty} \frac{1}{T} \sum_{t = 1}^T \pi_i \\
-                & = \lim_{T \rightarrow \infty}  \frac{1}{T} \sum_{t = 1}^T \left(\sum_{j = 1}^M P_{ij}^t \pi_{j}\right) &&  \text{for eq. \ref{eq:property_pi}}\\
+                & = \lim_{T \rightarrow \infty}  \frac{1}{T} \sum_{t = 1}^T \left(\sum_{j = 1}^M P_{ij}^t \pi_{j}\right) &&  \text{Eq. \ref{eq:property_pi}}\\
                 & = \sum_{j = 1}^M \pi_j \left(\lim_{T \rightarrow \infty}  \frac{1}{T}  \sum_{t = 1}^T P_{ij}^t \right) && \text{changing the order of finite sums} \\
-                & = \sum_{j = 1}^M \pi_j \nu_i && \text{by \hyperref[def:nu-tau]{definition of $\nu$}} \\
-                & = \nu_i && \text{for \hyperref[def:distribution] {property 2  of the distributions}}
+                & = \sum_{j = 1}^M \pi_j \nu_i && \text{\hyperref[def:nu-tau]{definition of $\nu$}} \\
+                & = \nu_i && \text{\hyperref[def:distribution] {Property 2  of the distributions}}
         \end{align}
 \end{proof}
