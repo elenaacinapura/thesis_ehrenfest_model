@@ -25,7 +25,9 @@ These actions can be repeated for the desired number of time and we will assume 
 Let us now explain how to estimate the limiting distribution of the system through the simulation. The idea is to exploit the definition of limiting distribution and calculate it as the probability distribution in the limit of a great number of time steps. The probability distribution, in turn, can be approximated by the visit frequency obtained from the simulation. A vector \texttt{visits[0,\dots,N]} of integers is used to store the number of visits to the possible states: at the beginning, each element of \texttt{visits} is set equal to 0, except the one corresponding to $X_0$ which is set equal to 1; at each time step, after having updated the value of \texttt{X}, \texttt{visits[X]} is incremented by 1. This procedure, after $T$ time steps, leads to \texttt{visits[i]} being equal to the number of time steps that the system has spent in the state \texttt{i}. In order to obtain the visit frequency at time $T$, \ie a normalized distribution that approximates the probability distribution, one must divide each element of \texttt{visits} by $T$. One can hence calculate the value of the frequency distribution as a function of time and verify whether it converges to the theoretical limiting distribution of the chain as $T$ increases.
 
 \smallskip
-Lastly, let us discuss how to estimate the mean recurrence time of the possible states. The calculation exploits two vectors of integers: \texttt{last\_visit[0,\dots,N]} and \texttt{last\_visit\_time[0,\dots,N]}. The vector \texttt{last\_visit} is used to memorize the last instant in which the system occupied each state; at the beginning, \texttt{last\_visit\_time[X]} is set equal to 0, while all the other elements are set equal to -1 to indicate that those state have not been visited yet. The vector \texttt{recurrence\_time[0,\dots,N]} is initially filled with zeros and its purpose will be clear shortly. At each time step \texttt{t}, after having updated the value of \texttt{X}, one can obtain the time elapsed from the last visit to $X$ as \texttt{t - last\_visit[X]}: this value is added to \texttt{recurrence\_time[X]}. In this way, after $T$ time steps \texttt{recurrence\_time[i]} will contain the sum of the time instants elapsed between the visits to state \texttt{i}. In order to obtain the \emph{mean} recurrence time of each state, each element of \texttt{recurrence\_time} is finally divided by $T$. As $T$ increases, the elements of \texttt{recurrence\_time} should converge to the mean recurrence times predicted by the theory of Markov chains.
+Lastly, let us discuss how to estimate the mean recurrence time of the possible states. The calculation exploits two vectors of integers: \texttt{last\_visit[0,\dots,N]} and \texttt{last\_visit\_time[0,\dots,N]}. The vector \texttt{last\_visit} is used to memorize the last instant in which the system occupied each state; at the beginning, \texttt{last\_visit\_time[X]} is set equal to 0, while all the other elements are set equal to -1 to indicate that those state have not been visited yet. The vector \texttt{recurrence\_time[0,\dots,N]} is initially filled with zeros and its purpose will be clear shortly. At each time step \texttt{t}, after having updated the value of \texttt{X}, one can obtain the time elapsed from the last visit to $X$ as \texttt{t - last\_visit[X]}: this value is added to \texttt{recurrence\_time[X]}. In this way, after $T$ time steps \texttt{recurrence\_time[i]} will contain the sum of the time instants elapsed between the consecutive visits to state \texttt{i}. In order to obtain the \emph{mean} recurrence time of each state, each element of \texttt{recurrence\_time} is finally divided by the total number of visits to state \texttt{i}, which is provided by the vector \texttt{visits}. In the case that the total number of visits to some state is zero, the mean recurrence time should be equal to $\infty$, but in order to avoid the use of great number, the mean recurrence time will be conventionally set to zero. 
+
+As $T$ increases, the elements of \texttt{recurrence\_time} should converge to the mean recurrence times predicted by the theory of Markov chains.
 
 \medskip
 In order to perform the simulation, the described algorithm is implemented in the C language. The random number generation process is managed with the Gnu Scientific Library using the function \texttt{gsl\_rng\_uniform\_int()} to extract an integer in a specified range with a uniform probability distribution.
@@ -39,37 +41,88 @@ The main goal of the simulation is to verify the asymptotic properties of the Eh
 \end{equation}
 We study the evolution in time of $D$ and we decide to consider that the system has converged if $D$ is about or smaller than $10^{-3}$.
 
-An important remark is needed at this point: the time that is needed for the convergence is expected to increase as the number of particles $N$ increases, especially if the initial state is very distant from the limiting distribution. In an extreme case, for instance if the initial configuration is the one with every particle in box 0, then at least half of the particles must be moved to the other box before reaching equilibrium, and in this case the time needed for the convergence is $\Omega(N)$. This is visible in figure \ref{fig:distances}, where $D$ is plotted against the variable \texttt{t} for $N = 10$, $N = 100$, $N = 10000$, for a simulation with initial state $X_0 = N$, \ie with box 1 empty.
+An important remark is needed at this point: the time that is needed for the convergence is expected to increase as the number of particles $N$ increases, especially if the initial state is very distant from the limiting distribution. In an extreme case, for instance if the initial configuration is the one with every particle in box 0, then at least half of the particles must be moved to the other box before reaching equilibrium, and in this case the time needed for the convergence is $\Omega(N)$. The plots in figure \ref{fig:distances} represent $D$ as a function of the time step for $N = 10$, $N = 100$ and $N = 10000$, for a simulation with initial state $X_0 = N$, \ie with box 1 empty. It can be seen clearly that the time needed for convergence increases as $N$ increases.
 
 \begin{figure}
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{sections/distance_N_10.eps}
         \caption{$N = 10$}
-        \label{fig:sfig1}
       \end{subfigure}
       \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{sections/distance_N_100.eps}
         \caption{$N = 100$}
-        \label{fig:sfig2}
       \end{subfigure}\\
       \begin{center}
       \begin{subfigure}{0.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{sections/distance_N_10000.eps}
         \caption{$N = 10000$}
-        \label{fig:sfig3}
       \end{subfigure}%
     \end{center}
 
     \captionsetup{width=.9\linewidth}
-    \caption{\textbf{Distance from asymptotic limit}. The figures report the distance $D$ as calculated in eq. \ref{eq:distance} as a function of the time steps of the simulation, for different values of $N$. They all refer to a simulation with initial state $X_0 = N$. The y axis is in logarithmic scale and the threshold $D = 10^{-3}$ is marked with the dashed line.}
+    \caption{\textbf{Distance from asymptotic limit}. The figures report the distance $D$ as calculated in eq. \ref{eq:distance} as a function of the time step of the simulation, for different values of $N$. They all refer to a simulation with initial state $X_0 = N$. The y axis is in logarithmic scale and the threshold $D = 10^{-3}$ is marked with the dashed line.}
     \label{fig:distances}
 \end{figure}
 
-Notice that the same figure shows that the visit frequency of the simulation does in fact converge to the limiting distribution predicted by the Markov chain theory. This is also shown in figure
+Despite the differences between them, the three subfigures in figure \ref{fig:distances} all show that the sampled visit frequency does in fact converge to the limiting distribution predicted by the theory of Markov chains. To see more clearly the evolution of the system towards convergence, figure \ref{fig:evolution} compares the visit frequency obtained from the simulation and the limiting distributions for some intermediate instants between the beginning of the simulation and the final state of convergence. The figure refers to simulation with $N = 100$ and the same initial condition as before, \ie $X_0 = N$. 
 
+\begin{figure}
+  \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{sections/evolution_0.pdf}
+      \caption{$t = 0$}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{sections/evolution_100.pdf}
+      \caption{$t = 100$}
+    \end{subfigure}\\
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{sections/evolution_1000.pdf}
+      \caption{$t = 1000$}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{sections/evolution_1000000.pdf}
+      \caption{At convergence}
+    \end{subfigure}
+
+  \captionsetup{width=.9\linewidth}
+  \caption{\textbf{Converge of the visit frequency to the limiting distribution}. The figures compare the limiting distribution with the visit frequency calculated at different times of the simulation, starting from $t = 0$ and ending with the state of convergence. They all refer to a simulation with $N = 100$.}
+  \label{fig:evolution}
+\end{figure}
+
+The comparison between the simulated and theoretical mean recurrence times is more difficult to be performed, because a longer simulation is required in order to reach a good agreement with the predictions. In particular the most extreme states, such as $X = 0$ and $X = N$, have a very low probability to be occupied, therefore their estimated mean recurrence time is subject to a greater error. It is easier to verify that the theory correctly predicts the results of the simulation if the system has a small number of particles, because the average time needed to explore all the possible configurations is shorter and hence even the most improbable states are visited for a sufficient number of times. 
+
+Figure \ref{fig:recurrence} compares the mean recurrence times predicted by the theory of Markov chains and the ones obtained from the simulation, for some values of $N$. The plots all refer to a simulation of $10^7$ time steps and show that for small values of $N$ the predictions are in good agreement with the results of the simulation. As $N$ increases, however, the used number of time steps is not sufficient to estimate with good a good precision the mean recurrence time of the most improbable states. 
+
+\begin{figure}
+  \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{sections/recurrence_10.eps}
+      \caption{$N = 10$}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{sections/recurrence_20.eps}
+      \caption{$N = 20$}
+    \end{subfigure}\\
+    \begin{center}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{sections/recurrence_50.eps}
+      \caption{$N = 50$, only some states are displayed}
+    \end{subfigure}%
+  \end{center}
+
+  \captionsetup{width=.9\linewidth}
+  \caption{\textbf{Mean recurrence time}. DA SCRIVERE}
+  \label{fig:recurrence}
+\end{figure}
 
 
 
