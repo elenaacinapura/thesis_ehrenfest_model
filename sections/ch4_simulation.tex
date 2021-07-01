@@ -4,6 +4,7 @@ The Ehrenfest urn problem is formulated on a discrete state space and with discr
 \section{Description of the simulation}
 The idea behind studying the Ehrenfest urn problem with a computational approach is to simulate a specific evolution of the system --- one of the many possible ones --- by reproducing the actions of the problem. The asymptotic behaviour of the system can then be studied by running the simulation for a large number of time steps. In this section we will illustrate a possible implementation of the simulation: we will explain how to represent the state of the system, how to reproduce the evolution and how to estimate the limiting distribution and the mean recurrence time.
 
+\medskip
 Consider an Ehrenfest chain on a system of $N$ particles. Let us label the $N$ particles with indices $0, \dots,N-1$ and the two boxes with indices 0, for box A, and 1, for box B. A vector \texttt{box[0,\dots,N-1]} of booleans is used to memorize the box in which each particle is situated: \texttt{box[i] = 0} if particle $i$ is in box 0 (\ie box A), otherwise \texttt{box[i] = 1}. In the context of Markov chains the state of the system is the number of particle in box 0. This value is stored in a variable \texttt{X} and is obtained by counting how many entries of the vector \texttt{box} are equal to 0. 
 
 A completely specified initial condition for the simulation corresponds to the knowledge of the position of each particle, \ie of each element of the vector \texttt{box}. It can be the case, however, that the only initial information that is known is the value of $X_0$; in that case, for instance if $X_0 = j$, one can use as initial condition any of the possible configurations with $j$ elements of \texttt{box} equal to 0 and the others equal to 1, because their evolutions will be determined by the same transitions probabilities.
@@ -17,22 +18,57 @@ With this implementation, a time step of evolution of the system is reproduced w
     \begin{center}
         \texttt{if box[k] != b then box[k] = !box[k]}
     \end{center}
-    In addition, the variable \texttt{X} must be incremented by one if particle \texttt{k} was in box 1 and \texttt{b = 0}, or decremented by one if particle \texttt{k} was in box 0 and \texttt{b = 1}.
+    In addition, the variable \texttt{X} is incremented by one if particle \texttt{k} was in box 1 and \texttt{b = 0}, or decremented by one if particle \texttt{k} was in box 0 and \texttt{b = 1}.
 \end{enumerate}
 These actions can be repeated for the desired number of time and we will assume that a counter \texttt{t} is initially set equal to 0 and incremented by 1 at each time step, indicating the current time instant.
 
 Let us now explain how to estimate the limiting distribution of the system through the simulation. The idea is to exploit the definition of limiting distribution and calculate it as the probability distribution in the limit of a great number of time steps. The probability distribution, in turn, can be approximated by the visit frequency obtained from the simulation. A vector \texttt{visits[0,\dots,N]} of integers is used to store the number of visits to the possible states: at the beginning, each element of \texttt{visits} is set equal to 0, except the one corresponding to $X_0$ which is set equal to 1; at each time step, after having updated the value of \texttt{X}, \texttt{visits[X]} is incremented by 1. This procedure, after $T$ time steps, leads to \texttt{visits[i]} being equal to the number of time steps that the system has spent in the state \texttt{i}. In order to obtain the visit frequency at time $T$, \ie a normalized distribution that approximates the probability distribution, one must divide each element of \texttt{visits} by $T$. One can hence calculate the value of the frequency distribution as a function of time and verify whether it converges to the theoretical limiting distribution of the chain as $T$ increases.
 
+\smallskip
 Lastly, let us discuss how to estimate the mean recurrence time of the possible states. The calculation exploits two vectors of integers: \texttt{last\_visit[0,\dots,N]} and \texttt{last\_visit\_time[0,\dots,N]}. The vector \texttt{last\_visit} is used to memorize the last instant in which the system occupied each state; at the beginning, \texttt{last\_visit\_time[X]} is set equal to 0, while all the other elements are set equal to -1 to indicate that those state have not been visited yet. The vector \texttt{recurrence\_time[0,\dots,N]} is initially filled with zeros and its purpose will be clear shortly. At each time step \texttt{t}, after having updated the value of \texttt{X}, one can obtain the time elapsed from the last visit to $X$ as \texttt{t - last\_visit[X]}: this value is added to \texttt{recurrence\_time[X]}. In this way, after $T$ time steps \texttt{recurrence\_time[i]} will contain the sum of the time instants elapsed between the visits to state \texttt{i}. In order to obtain the \emph{mean} recurrence time of each state, each element of \texttt{recurrence\_time} is finally divided by $T$. As $T$ increases, the elements of \texttt{recurrence\_time} should converge to the mean recurrence times predicted by the theory of Markov chains.
 
 \medskip
 In order to perform the simulation, the described algorithm is implemented in the C language. The random number generation process is managed with the Gnu Scientific Library using the function \texttt{gsl\_rng\_uniform\_int()} to extract an integer in a specified range with a uniform probability distribution.
 
 \section{Results and comparison with predictions}
-In this section we present the results of the simulation of the Ehrenfest urn model implemented with the algorithm described in the previous section. We firstly present the results for a system with a small number of particles, and then show what happens if the number of particles is increased.
+In this section we present the results of the simulation described in the previous section, and compare them with the predictions of the Markov chain analysis illustrated in \hyperref[ch:3]{Chapter 3}.
 
-Let us begin with a system with $N = 10$ particles. The small number of particles 
+The main goal of the simulation is to verify the asymptotic properties of the Ehrenfest system in the limit of a large number of time steps. To accomplish this task, the state of the system is let evolve and for each time step the visit frequency and the mean recurrence time are calculated. In order to study the convergence to the theoretical asymptotic state, we estimate the distance between the visit frequency and the theoretical distribution of the system. The method that is chosen to calculate this distance is the discrete version of the $L^2$ norm: given that the vector \texttt{limiting\_dist[]} contains the components of the limiting distribution and \texttt{visits[]} the normalized visit frequencies for a certain time instant, the distance is calculated as
+\begin{equation} \label{eq:distance}
+    D := \sum_{i = 0}^{N} \left|\text{\texttt{limiting\_dist[i] - visits[i]}} \right| ^2
+\end{equation}
+We study the evolution in time of $D$ and we decide to consider that the system has converged if $D$ is about or smaller than $10^{-3}$.
 
+An important remark is needed at this point: the time that is needed for the convergence is expected to increase as the number of particles $N$ increases, especially if the initial state is very distant from the limiting distribution. In an extreme case, for instance if the initial configuration is the one with every particle in box 0, then at least half of the particles must be moved to the other box before reaching equilibrium, and in this case the time needed for the convergence is $\Omega(N)$. This is visible in figure \ref{fig:distances}, where $D$ is plotted against the variable \texttt{t} for $N = 10$, $N = 100$, $N = 10000$, for a simulation with initial state $X_0 = N$, \ie with box 1 empty.
+
+\begin{figure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{sections/distance_N_10.eps}
+        \caption{$N = 10$}
+        \label{fig:sfig1}
+      \end{subfigure}
+      \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{sections/distance_N_100.eps}
+        \caption{$N = 100$}
+        \label{fig:sfig2}
+      \end{subfigure}\\
+      \begin{center}
+      \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{sections/distance_N_10000.eps}
+        \caption{$N = 10000$}
+        \label{fig:sfig3}
+      \end{subfigure}%
+    \end{center}
+
+    \captionsetup{width=.9\linewidth}
+    \caption{\textbf{Distance from asymptotic limit}. The figures report the distance $D$ as calculated in eq. \ref{eq:distance} as a function of the time steps of the simulation, for different values of $N$. They all refer to a simulation with initial state $X_0 = N$. The y axis is in logarithmic scale and the threshold $D = 10^{-3}$ is marked with the dashed line.}
+    \label{fig:distances}
+\end{figure}
+
+Notice that the same figure shows that the visit frequency of the simulation does in fact converge to the limiting distribution predicted by the Markov chain theory. This is also shown in figure
 
 
 
