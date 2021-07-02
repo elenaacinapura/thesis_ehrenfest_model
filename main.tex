@@ -39,9 +39,9 @@
 %%%%%%%%%%%%%%%%%%%%% Bibliography %%%%%%%%%%%%%%%%%%%%%%%
 \addbibresource{./biblio.bib}
 % split bibliography between cited and not cited
-\DeclareBibliographyCategory{cited}
-\AtEveryCitekey{\addtocategory{cited}{\thefield{entrykey}}}
-\nocite{*}
+% \DeclareBibliographyCategory{cited}
+% \AtEveryCitekey{\addtocategory{cited}{\thefield{entrykey}}}
+% \nocite{*}
 
 
 \errorcontextlines\maxdimen
@@ -104,18 +104,11 @@
 \endgroup
 
 
-% bibliografia in formato bibtex
-%
-% aggiunta del capitolo nell'indice
-%\addcontentsline{toc}{chapter}{Bibliografia}
-% stile con ordinamento alfabetico in funzione degli autori
-%\bibliographystyle{plain}
-%\bibliography{biblio}
+
 \nocite{*}
 % \printbibheading[heading=bibintoc]
-% \printbibliography[category=cited,heading=subbibliography,title={References}]
-% \printbibliography[notcategory=cited,heading=subbibliography,title={Further reading}]
-%\printbibliography[heading=bibintoc,title={References}]
+% \printbibliography[title={References}]
+\printbibliography[heading=bibintoc,title={References}]
 
 
 %\titleformat{\chapter}
