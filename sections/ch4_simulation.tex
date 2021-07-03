@@ -42,8 +42,9 @@ At each time step \texttt{t}, after having updated the value of \texttt{X}, one 
 As $T$ increases, the elements of \texttt{recurrence\_time} should converge to the mean recurrence times predicted by the theory of Markov chains.
 
 \subsection{Details of the implementation}
-In order to perform the simulation, the described algorithm is implemented in the C language. The random number generation process is managed with the GNU Scientific Library using the function \texttt{gsl\_rng\_uniform\_int()}, which generates an integer in a specified range with a uniform probability distribution.
+In order to perform the simulation, the described algorithm is implemented in the C language. The random number generation process is managed with the GNU Scientific Library using the function \texttt{gsl\_rng\_uniform\_int()}, which generates an integer in a specified range with a uniform probability distribution. The simulation is compiled and executed on a processor Intel Core i7-8550U.
 
+The source code of the simulation is available at \url{https://github.com/elenaacinapura/ehrenfest_model}.
 
 \section{Results and comparison with predictions}
 In this section we present the results of the simulation described in the previous section, and compare them with the predictions of the Markov chain analysis illustrated in \hyperref[ch:3]{Chapter 3}.
@@ -54,7 +55,7 @@ The main goal of the simulation is to verify the asymptotic properties of the Eh
 \end{equation}
 We hence study the evolution in time of $D$; we decide that the system has converged if $D$ is about or smaller than $10^{-3}$.
 
-An important remark is needed at this point: the time that is needed to reach the convergence is expected to increase as the number of particles $N$ increases, especially if the initial state has a very low probability in the limiting distribution. In the worst case, for instance if the initial configuration is the one with every particle in box 0, then at least half of the particles must be moved to the other box before equilibrium is reached, and in this case the time needed for the convergence is $\Omega(N)$\footnote{Landau notation.}. The plots in Figure \ref{fig:distances} represent $D$ as a function of time for $N = 10$, $N = 100$ and $N = 10000$, for a simulation with initial state $X_0 = N$, \ie with all the particles in box 0. It can be seen clearly from the figure that the time needed for the convergence increases as $N$ increases.
+An important remark is needed at this point: the time that is needed to reach the convergence is expected to increase as the number of particles $N$ increases, especially if the initial state has a very low probability in the limiting distribution. In the worst case, for instance if the initial configuration is the one with every particle in box 0, then at least half of the particles must be moved to the other box before equilibrium is reached, and in this case the time needed for the convergence is $\Omega(N)$\footnote{Asymptotic lower bound (Landau notation).}. The plots in Figure \ref{fig:distances} represent $D$ as a function of time for $N = 10$, $N = 100$ and $N = 10000$, for a simulation with initial state $X_0 = N$, \ie with all the particles in box 0. It can be seen clearly from the figure that the time needed for the convergence increases as $N$ increases.
 
 Despite this difference between them, the three subfigures in Figure \ref{fig:distances} all show that the sample visit frequency does in fact converge to the limiting distribution predicted by the theory of Markov chains. To see more clearly the evolution of the system towards convergence, Figure \ref{fig:evolution} compares the sample visit frequency obtained from the simulation and the limiting distribution for some intermediate instants between the beginning of the simulation and the final condition of convergence. The figure refers to a simulation with $N = 100$ and the same initial condition as before, \ie $X_0 = N$. 
 
