@@ -13,17 +13,17 @@ be the probability that the system is found in the state labeled by $x$ at time 
     \begin{equation}
         \prob{ X_t = x_t | X_{t-1} = x_{t-1}, X_{t-2} = x_{t-2}, \dots, X_0 = x_0 } = \prob { X_t = x_t | X_{t-1} = x_{t-1} } \quad
     \end{equation}
-The above stated property, usually called \emph{Markov property} but also, more evocatively, \emph{memorylessness}, states that the probability for the system to be in a certain state at a given time instant only depends on the state of the time instant before. This means that the system \enquote{has no memory of the past}: the current state is only affected by the previous state, regardless of the way is was reached.
+The above stated property, usually called \emph{Markov property} but also, more evocatively, \emph{memorylessness}, states that the probability for the system to be in a certain state at a given time instant only depends on the state of the time instant before. This means that the system \enquote{has no memory of the past}: the current state is only affected by the previous state, regardless of the way it was reached.
 \end{ndef}
 
 We will now consider a particular kind of Markov chains, called time-homogeneous.
-\begin{ndef} [Time-homogeneous Markov chain] A Markov chain is called time-homogeneous if the transition probability between any two given states doesn't depend on time, \ie if
+\begin{ndef} [Time-homogeneous Markov chain] A Markov chain is called time-homogeneous if the transition probability between any two given states does not depend on time, \ie if
     \begin{equation}
         \prob {X_{t+1} = y | X_{t} = x} = \prob {X_{t} = y | X_{t-1} = x} \quad \quad \forall t\in \mathbb{N}, \forall y, x \in \Space
     \end{equation}
 \end{ndef}
 
-As a consequence of time-homogeneity,one is allowed to refer in general to \emph{the} probability of the transition from state $x$ to state $y$: this quantity does not depend on time and is therefore well defined. For the remainder of this chapter we will only be dealing with time-homogeneous Markov chains.
+As a consequence of time-homogeneity, one is allowed to refer in general to \emph{the} probability of the transition from state $x$ to state $y$: this quantity does not depend on time and is therefore well defined. For the remainder of this chapter we will only be dealing with time-homogeneous Markov chains.
 
 \section{Distributions, stochastic matrices and evolution}
 We will now introduce a means of representing the state and the evolution of a system in a Markov process, which is the use of distribution vectors and stochastic matrices. Since the considered chains are \emph{discrete}, it is possible to use a vector to represent the probabilities for the system to be in the possible states at a certain time, and a matrix to represent the probabilities of all the possible transitions between states. Let us now formalize these concepts.
@@ -136,7 +136,7 @@ As mentioned before, another important concept that we have to introduce in the 
     \begin{equation}
         P \staz = \staz
     \end{equation}
-    Hence, the stationary distribution is an \text{eigenvector} of the stochastic matrix with unitary eigenvalue. If the system happens to be found in the stationary distribution, it will remain in that same state forever.
+    Hence, the stationary distribution is an \text{eigenvector} of the stochastic matrix with unitary eigenvalue. If the system happens to be found in the stationary distribution, it will keep that distribution forever.
 \end{ndef}
 The limiting distribution and the stationary distribution are closely related. A first relationship between them is expressed by the following theorem.
 
@@ -169,7 +169,7 @@ The inverse implication, however, does not always hold. That is, a Markov chain 
     
 \end{ndef}
 \begin{ndef} [Aperiodicity]
-    A \emph{state} is said to be \emph{aperiodic} if its period is equal to 1. A Markov chain on space state $\Space$ is said to be aperiodic if all $x_i \in \Space$ are aperiodic. 
+    A \emph{state} is said to be \emph{aperiodic} if its period is equal to 1. A Markov chain on a space state $\Space$ is said to be aperiodic if all $x_i \in \Space$ are aperiodic. 
 \end{ndef}
 \begin{ndef} [Ergodicity]
     A Markov chain that is both irreducible and aperiodic is said \emph{ergodic}.
@@ -181,13 +181,13 @@ Now we are finally equipped to state the Perron-Frobenius Theorem.
 \end{theorem}
 
 \medskip
-So we have finally found an answer to our original question: if one can verify that a Markov chain is ergodic, then all one has to do is to find its stationary distribution, \ie the eigenvector with unitary eigenvalue, and then the asymptotic distribution of the system completely known. 
+We have finally found an answer to our original question: if one can verify that a Markov chain is ergodic, then all one has to do is to find its stationary distribution, \ie the eigenvector with unitary eigenvalue, and then the asymptotic distribution of the system completely known. 
 
-Let us make some considerations about how one can find the stationary distribution in practice. As said above, given the stochastic matrix of a Markov chain, finding its stationary distribution is an eigenvalue problem. Since there exist efficient algorithms to find eigenvectors and eigenvalues of matrices, a possible option is to solve the problem numerically. Alternatively, one might try to find an analytical formula for the stationary distribution; this can be done, for instance, by means of considerations about the behaviour of the system at equilibrium. This approach will be used to explain the stationary distribution of the Ehrenfest chain, in \hyperref[ch:3]{Chapter 3}.
+Let us make some considerations about how one can find the stationary distribution in practice. As said above, given the stochastic matrix of a Markov chain, finding its stationary distribution is an eigenvalue problem. Since there exist efficient algorithms to find eigenvectors and eigenvalues of matrices, a possible option is to solve the problem numerically. Alternatively, one might try to find an analytic formula for the stationary distribution; this can be done, for instance, by means of considerations about the behaviour of the system at equilibrium. This approach will be used to explain the stationary distribution of the Ehrenfest chain, in \hyperref[ch:3]{Chapter 3}.
 
 
 \section{Mean recurrence time}
-In this section we will assume that the limiting distribution of the chain is known and we will show some useful quantities that the limiting distribution allows to calculate.
+In this section we will assume that the limiting distribution of the chain is known and we will introduce some useful quantities that the limiting distribution allows to calculate.
 
 Suppose that a system described by a Markov process is found at $t = 0$ in some state $x_i$. We might be interested in asking: what is the average time that one should wait, before the system will come back to that same state? Alternatively, what is the proportion of time that the system is expected to spend in the state $x_i$?
 
@@ -196,7 +196,7 @@ The knowledge of the asymptotic behaviour of the Markov chain can help answer th
 \medskip
 Consider a system involved in a Markov process on state space $\Space$ and suppose that the system evolves for $T$ time steps; let the sequence $(X_0, X_1, \dots, X_T)$ describe the state of the system at the various time instants.
 \begin{ndef} [Number of visits]
-    Given a state $x_i \in \Space$, we define the random variable $n_i (X_0, T)$ as the number of time instants that system happens to be in state $x_i$, given that the initial state was $X_0$ and that the system evolved for $T$ time steps. This means:
+    Given a state $x_i \in \Space$, we define the random variable $n_i (X_0, T)$ as the number of time instants that system happens to be in the state $x_i$, given that the initial state was $X_0$ and that the system evolved for $T$ time steps. This means:
     \begin{equation}
         n_i (X_0, T) \coloneqq \sum_{t = 1}^T \mathds{1}_i(X_t) \quad , \quad \text{given a certain }X_0
     \end{equation}
@@ -236,6 +236,10 @@ There is a a fundamental relationship between the mean visit frequency and the l
     \begin{equation} \label{eq:expected_value}
         \mathds{E} [ n_i (X_0 = x_j, T)] = \sum_{t = 1}^T \prob{X_t = x_i | X_0 = x_j} = \sum_{t = 1}^T P_{ij}^t
     \end{equation} 
+    This implies that 
+    \begin{equation} \label{eq:nu_limit}
+        \nu_i = \lim_{T\rightarrow \infty} \frac{1}{T} \sum_{t = 1}^T P_{ij}^t
+    \end{equation}
     If the chain has a limiting distribution $\p$, then after Theorem \ref{th:limit-stat} $\p$ is also a stationary distribution for the matrix $P$. This implies that, for each $t\in \mathbb{N}$
     \begin{equation} \label{eq:property_pi}
         \p = P^t \p  \quad \text{or, for the components}\quad \pi_i = \sum_{j = 1}^M P_{ij}^t \pi_{j}
@@ -247,7 +251,7 @@ There is a a fundamental relationship between the mean visit frequency and the l
                 &  = \lim_{T \rightarrow \infty} \frac{1}{T} \sum_{t = 1}^T \pi_i \\
                 & = \lim_{T \rightarrow \infty}  \frac{1}{T} \sum_{t = 1}^T \left(\sum_{j = 1}^M P_{ij}^t \pi_{j}\right) &&  \text{Eq. \ref{eq:property_pi}}\\
                 & = \sum_{j = 1}^M \pi_j \left(\lim_{T \rightarrow \infty}  \frac{1}{T}  \sum_{t = 1}^T P_{ij}^t \right) && \text{changing the order of finite sums} \\
-                & = \sum_{j = 1}^M \pi_j \nu_i && \text{\hyperref[def:nu-tau]{definition of $\nu$}} \\
+                & = \sum_{j = 1}^M \pi_j \nu_i && \text{Eq \ref{eq:nu_limit}} \\
                 & = \nu_i && \text{\hyperref[def:distribution] {Property 2  of the distributions}}
         \end{align}
 \end{proof}
