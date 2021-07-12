@@ -2,7 +2,7 @@
 In this chapter we will present the formalism of Markov chains, starting from their definition and from the mathematical tools to represent them. We will then discuss the asymptotic behaviour of Markov chains and focus on some of their statistical properties in the asymptotic limit.
 \label{ch:markov_chains}
 \section{Definitions}
-Consider a finite set $\Space$ with dimension $M$ and consider a system whose state can take values in $\Space$; $\Space$ will be called therefore \emph{state space}. Let us indicate the state of the system at time $t$ with the variable $X_t$, and let us furthermore discretize the time, taking $t \in \mathbb{N}$. Suppose now that system state changes randomly in time, so that $X_t$ is a random variable. Let
+Consider a finite set $\Space$ with dimension $M$ and consider a system whose state can take values in $\Space$; $\Space$ will be called therefore \emph{state space}. Let us indicate the state of the system at time $t$ with the variable $X_t$, and let us furthermore discretize the time, taking $t \in \mathbb{N}$. Suppose now that the state of the system changes randomly in time, so that $X_t$ is a random variable. Let
 \begin{equation}
     \prob{X_t = x} \quad , \quad x \in \Space
 \end{equation}
@@ -97,7 +97,7 @@ Suppose now that a system is described at a certain time by a distribution $\vec
 \section{Asymptotic behaviour}
 We now draw our attention to a fundamental aspect of Markov chains. Suppose that the initial distribution of a system, $\f_0$, is completely known, \ie that one knows the probabilities for the system to be in each of the possible states $x_1, x_2, \dots, x_M$. We have shown how to compute the evolution of these probabilities for any time step using the stochastic matrix, but we might want to ask ourselves the following question:
 \begin{quote}
-    \emph{Is there a distribution that the system will eventually reach, asymptotically? If there is, which distribution is it?}
+    \emph{Is there a distribution that the system will asymptotically reach? If there is one, which distribution is it?}
 \end{quote}
 In other words, this question aims at knowing whether the system can reach \emph{equilibrium}, \ie a configuration in which the probabilities of the possible states are constant in time.
 In most real-life applications, indeed, one is usually interested in the properties of a system in conditions of equilibrium, after the system has evolved for a sufficiently long time; hereafter it is useful to understand the asymptotic behaviour of the system. In order tackle this problem we will introduce the concepts of \emph{limiting distribution} and \emph{stationary distribution}.
@@ -148,7 +148,7 @@ The limiting distribution and the stationary distribution are closely related. A
     \begin{align}
         P \p
          & = P \lim_{t \rightarrow \infty} P^t \f_0  \\
-         & = lim_{t \rightarrow \infty} P^{t+1} \f_0 \\
+         & = \lim_{t \rightarrow \infty} P^{t+1} \f_0 \\
          & = \p
     \end{align}
 \end{proof}
@@ -169,7 +169,7 @@ The inverse implication, however, does not always hold. That is, a Markov chain 
     
 \end{ndef}
 \begin{ndef} [Aperiodicity]
-    A \emph{state} is said to be \emph{aperiodic} if its period is equal to 1. A Markov chain on a space state $\Space$ is said to be aperiodic if all $x_i \in \Space$ are aperiodic. 
+    A \emph{state} is said to be \emph{aperiodic} if its period is equal to 1. A Markov chain on a space state $\Space$ is said to be aperiodic if all the states in $\Space$ are aperiodic. 
 \end{ndef}
 \begin{ndef} [Ergodicity]
     A Markov chain that is both irreducible and aperiodic is said \emph{ergodic}.
@@ -181,7 +181,7 @@ Now we are finally equipped to state the Perron-Frobenius Theorem.
 \end{theorem}
 
 \medskip
-We have finally found an answer to our original question: if one can verify that a Markov chain is ergodic, then all one has to do is to find its stationary distribution, \ie the eigenvector with unitary eigenvalue, and then the asymptotic distribution of the system completely known. 
+We have finally found an answer to the original question: if one can verify that a Markov chain is ergodic, then all one has to do is to find its stationary distribution, \ie the eigenvector with unitary eigenvalue, and then the asymptotic distribution of the system is completely known. 
 
 Let us make some considerations about how one can find the stationary distribution in practice. As said above, given the stochastic matrix of a Markov chain, finding its stationary distribution is an eigenvalue problem. Since there exist efficient algorithms to find eigenvectors and eigenvalues of matrices, a possible option is to solve the problem numerically. Alternatively, one might try to find an analytic formula for the stationary distribution; this can be done, for instance, by means of considerations about the behaviour of the system at equilibrium. This approach will be used to explain the stationary distribution of the Ehrenfest chain, in \hyperref[ch:3]{Chapter 3}.
 
@@ -194,7 +194,7 @@ Suppose that a system described by a Markov process is found at $t = 0$ in some 
 The knowledge of the asymptotic behaviour of the Markov chain can help answer these questions. As before, we will start with some simple definitions, and then give the relevant theorems.
 
 \medskip
-Consider a system involved in a Markov process on state space $\Space$ and suppose that the system evolves for $T$ time steps; let the sequence $(X_0, X_1, \dots, X_T)$ describe the state of the system at the various time instants.
+Consider a system involved in a Markov process on a state space $\Space$ and suppose that the system evolves for $T$ time steps; let the sequence $(X_0, X_1, \dots, X_T)$ describe the state of the system at the various time instants.
 \begin{ndef} [Number of visits]
     Given a state $x_i \in \Space$, we define the random variable $n_i (X_0, T)$ as the number of time instants that system happens to be in the state $x_i$, given that the initial state was $X_0$ and that the system evolved for $T$ time steps. This means:
     \begin{equation}
@@ -215,7 +215,7 @@ Consider a system involved in a Markov process on state space $\Space$ and suppo
         \nu_i \coloneqq \lim_{T\rightarrow \infty} \frac{1}{T} \mathds{E} \left[ n_i (T) \right]
     \end{equation}
     independently on the initial state --- for this reason we have dropped the indication of the initial state.
-    We furthermore define the \emph{mean recurrence time} of state $x_i$ as
+    We furthermore define the \emph{mean recurrence time} of a state $x_i$ as
     \begin{equation} \label{def:mean_rec_time}
         \tau_i \coloneqq \frac{1}{\nu_i}
     \end{equation}
